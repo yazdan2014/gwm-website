@@ -1,0 +1,86 @@
+.header{
+    position: absolute;
+    width: 100%;
+    border-bottom: 3px solid transparent; /* <- here */
+    transition: border-bottom 0.5s;
+    text-decoration: none; /* I added this for clarity of effect */
+    z-index: 999;
+}
+
+.nav1{
+    height: auto;
+}
+
+.navItem1 {
+    margin: 30px 0px 30px 0px;
+    color: white;
+    height: 20px;
+    border-right: 1px solid silver;
+    width: auto;
+    display: inline-block;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.nav2{
+    /* margin-top: 30px; */
+    height: auto;
+}
+
+.navItem2 {
+    margin: 0px 0px 0px 0px;
+    font-size: 18px;
+    font-weight: 400;
+    width: auto;
+    display: inline-block;
+    white-space: nowrap;
+
+    border-bottom: 3px solid transparent; /* <- here */
+    transition: border-bottom 0.5s;
+    text-decoration: none; /* I added this for clarity of effect */
+}
+
+.navItem2:hover {
+    color: white;
+    border-bottom: 3px solid silver;
+}
+
+.dropdown-toggle::after {
+    display: none !important; 
+}
+
+
+.navOffers{
+    border: 1px solid silver;
+}
+
+.active{
+    border-bottom: 3px solid silver;
+}
+
+
+
+@media (max-width: 768px) {
+
+    .navItem1 {
+        border-right: none;
+    }
+    .navItem2 {
+        border-right: none;
+    }
+
+}
+.navBrand{
+  transition: width 0.3s, height 0.3s, background-color 1s;
+}
+
+.stickyHeader{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background-color: #ffffff !important;
+    animation: 500ms ease-in-out 0s normal none 1 running fadeInDown;
+    padding-top: 0px;
+}
