@@ -1,0 +1,13 @@
+.footerIcon{
+    margin-right: 20px
+}
+
+.footerTerms{
+    font-size: 10px;
+}
+
+.bhub{
+    min-height: 250px;
+    z-index: -1;
+    background-image:  linear-gradient(rgb(14, 58, 92, 0.5), rgb(14, 58, 92 , 0.5) ,rgb(14, 58, 92 , 0.5)) ,url("../../../assets/home/hub-bg.jpg") ;
+}

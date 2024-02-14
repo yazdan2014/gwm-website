@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import Carousel from 'react-bootstrap/Carousel';
+import { Button } from 'react-bootstrap';
 
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -24,6 +25,15 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import Card from 'react-bootstrap/Card';
+import cardpic from '../assets/home/cardpic.jpg'
+
+import cost_effectiveness from '../assets/home/icons/Cost-Effectiveness.png'
+import customized_solutions from '../assets/home/icons/Costumized-Solutions.png'
+import diversification from '../assets/home/icons/Diversification.png'
+import effective from '../assets/home/icons/Effective.png'
+import experts from '../assets/home/icons/Experts.png'
+
 
 function Home() {
     return (  
@@ -46,7 +56,7 @@ function Home() {
         <section className={styles.section1 + ""}>
           <Container >
               <Row>
-                <h1 className='h1 text-center'>Welcome to GWM</h1>
+                <h1 className='text-center'>Welcome to GWM</h1>
                 
                 <p className='text-center'>
                   <br/><br/>
@@ -73,13 +83,13 @@ function Home() {
               <Row style={{marginTop:"40px"}}>
                 <OwlCarousel className={styles.carousel} navText={[<FontAwesomeIcon icon={faChevronLeft} />,<FontAwesomeIcon icon={faChevronRight} />]} nav={true} dots={false} loop autoplay center={true}  items={3} margin={50} >
                   
-                  <div className={'item '+ styles.carouselItem}>
+                  <div className={'item '+ styles.carouselItem2}>
                       <Image className={styles.carouselImages} src={contactus} fluid />
                   </div>
-                  <div className={'item '+ styles.carouselItem}>
+                  <div className={'item '+ styles.carouselItem2}>
                     <Image className={styles.carouselImages} src={latestnews} fluid/>
                   </div>
-                  <div className={'item '+ styles.carouselItem}>
+                  <div className={'item '+ styles.carouselItem2}>
                       <Image className={styles.carouselImages} src={partners} fluid/>
                   </div>
                 </OwlCarousel>
@@ -88,32 +98,85 @@ function Home() {
               <br/><br/><br/>
 
               <Container>
-                <h1 className='h1 text-center'>OUR STRATEGIC PILLARS</h1>
-                <Row></Row>
+                <h1 className='text-center mb-5' >OUR STRATEGIC PILLARS </h1>
+                <Row className='justify-content-center mb-5'>
+                  <Col sm={4} className='text-center'>
+
+                    <div className={styles.icon + ' mb-4'}>
+                      <Image src={customized_solutions} />
+                    </div>
+
+                    <div className={styles.icon_text}>
+                      <h4 className='px-2'>CUSTOMIZED SOLUTIONS</h4>
+                      <p>Connect with us to benefit from our tailor-made packages and smart solutions for company formation in the UAE.</p>
+                    </div>
+                  </Col>
+
+                  <Col sm={4} className='text-center'>
+                    <div className={styles.icon + ' mb-4'}>
+                      <Image src={customized_solutions} />
+
+                    </div>
+                    <div className={styles.icon_text }>
+                      <h4 className='px-2'>SUPERIOR EFFICIENCY</h4>
+                      <p>If you are setting up a business in the UAE, our seamless support will have you ready to operate in no time.</p>
+                    </div>
+                  </Col>
+                </Row>
+                <Row className='justify-content-center'>
+                  <Col  className='text-center'>
+
+                    <div className={styles.icon + ' mb-4'}>
+                      <Image src={customized_solutions} />
+                    </div>
+
+                    <div className={styles.icon_text}>
+                      <h4 className='px-2'>COMPLETELY DIVERSIFIED</h4>
+                      <p>Choose from a wide range of industries, sectors and business activities when opening a company in the UAE.</p>
+                    </div>
+                  </Col>
+
+                  <Col  className='text-center'>
+                    <div className={styles.icon + ' mb-4'}>
+                      <Image src={customized_solutions} />
+
+                    </div>
+                    <div className={styles.icon_text }>
+                      <h4 className='px-2'>COST-EFFECTIVE SOLUTIONS</h4>
+                      <p>It is easy to start a small business in the UAE with our affordable set-up packages and premium solutions.</p>
+                    </div>
+                  </Col>
+
+                  <Col  className='text-center'>
+                    <div className={styles.icon + ' mb-4'}>
+                      <Image src={customized_solutions} />
+
+                    </div>
+                    <div className={styles.icon_text }>
+                      <h4 className='px-2'>SEASONED EXPERTS</h4>
+                      <p>Company formation in the UAE – with ease. Our team of experts are always ready to help with all of your requirements.</p>
+                    </div>
+                  </Col>
+                </Row>
+
+                
               </Container>
           </Container>
         </section>
-            
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
-        <h1>Hello World!</h1> <br/>
+
+        <section>
+          
+
+        </section>
+
+        <section>
+          <Container className='py-4 w-50 text-center'>
+            <h1 className='pb-4'>HAPPENINGS IN GWM</h1>
+            <Row className=' text-center'>
+              
+            </Row>
+          </Container>
+        </section>
       </>
     );
   }
