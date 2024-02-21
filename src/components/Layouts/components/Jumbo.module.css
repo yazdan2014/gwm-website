@@ -1,0 +1,29 @@
+.carouselItem{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1) , rgba(0, 0, 0, 0.1) , rgba(0, 0, 0, 0));
+    position: relative; 
+    overflow: hidden;
+}
+
+
+.carouselImages{
+    object-fit: cover;
+    position:relative;
+    z-index:-1;
+    display:block;
+    background-size: contain;
+    max-width: 100%;
+    height: auto;
+    max-height: 65vh;
+}
+
+.carouselItem2{
+    background-image: linear-gradient(rgb(0,145,62 , 0.5), rgb(0,145,62 , 0.2) , rgb(0,145,62 , 0.2) , rgb(0,145,62 , 0.5));
+    position: relative; overflow: hidden;
+}
+
+
+.carousel::before{
+    background: url('../../../assets/home/left-pattern_800.png')!important;
+    position: absolute;
+    z-index: 1
+}

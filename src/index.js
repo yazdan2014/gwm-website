@@ -5,7 +5,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from './components/Layouts/Layout';
+
 import Home from './components/Home';
+import About from './components/About';
+import ContactUs from './components/ContactUs';
+
+
 import NoPage from './components/Layouts/NoPageFound';
 
 
@@ -37,6 +42,8 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route path="*" element={<NoPage />} />
             <Route path='' element={<Home />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/contact-us' element={<ContactUs />} />
           </Route>
         </Routes>
       </BrowserRouter>

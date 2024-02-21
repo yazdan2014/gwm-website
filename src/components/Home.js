@@ -34,18 +34,17 @@ import diversification from '../assets/home/icons/Diversification.png'
 import effective from '../assets/home/icons/Effective.png'
 import experts from '../assets/home/icons/Experts.png'
 
-
+import Jumbo from './Layouts/components/Jumbo'
 function Home() {
     return (  
       <>
 
-      
         <OwlCarousel className={styles.carousel} dots={false} loop autoplay center={true} items={1} >
             <div className={'item '+ styles.carouselItem}>
-                <Image className={styles.carouselImages} src={kiwi} fluid />
+              <Image className={styles.carouselImages} src={business_woman} fluid/>
             </div>
             <div className={'item '+ styles.carouselItem}>
-              <Image className={styles.carouselImages} src={business_woman} fluid/>
+                <Image className={styles.carouselImages} src={kiwi} fluid />
             </div>
             <div className={'item '+ styles.carouselItem}>
                 <Image className={styles.carouselImages} src={clock} fluid/>
@@ -53,7 +52,7 @@ function Home() {
         </OwlCarousel>
       
 
-        <section className={styles.section1 + ""}>
+        <section className={styles.section1 + " fs-5 fw-light text-muted"}>
           <Container >
               <Row>
                 <h1 className='text-center'>Welcome to GWM</h1>
@@ -170,7 +169,7 @@ function Home() {
         </section>
 
         <section>
-          <Container className='py-4 w-50 text-center'>
+          <Container className='py-4 w-50 text-center fs-5 fw-lighter text-muted'>
             <h1 className='pb-4'>HAPPENINGS IN GWM</h1>
             <Row className=' text-center'>
               

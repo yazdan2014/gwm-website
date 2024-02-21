@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faFacebookF , faTwitter, faInstagram , faLinkedin, faYoutube } from "@fortawesome/free-brands-svg-icons"
 
 
-import logo from '../../../assets/logosite.png';
+import logo from '../../../assets/logobw.png';
 
 import Image from 'react-bootstrap/Image';
 
@@ -70,7 +70,7 @@ function Footer() {
                             </Row>
                         </Col>
                         <Col md={2} sm={12} className='text-center'>
-                            <Image src={logo} fluid/>
+                            <Image  src={logo} fluid/>
                         </Col>
                     </Row>
                     <Row >

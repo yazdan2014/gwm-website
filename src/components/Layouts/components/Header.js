@@ -15,7 +15,18 @@ import logo from '../../../assets/logosite.png';
 
 import styles from './Header.module.css';
 
-function Header() {
+
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+
+import kiwi from '../../../assets/home/kiwi.jpg'
+import Image from 'react-bootstrap/Image';
+
+import { NavLink } from 'react-router-dom';
+
+
+function Header({header_image}) {
     let [header_class, setHeaderClass] = useState(["" , true, '300px'])
     let [link_color, setLinkColor] = useState('white')
     useEffect(() => {
@@ -46,6 +57,7 @@ function Header() {
       }, []);
 
     return (
+        <>
         <header className={styles.header}>
             <Navbar expand="xl" className={ " " + header_class[0]}>
                 <Container>
@@ -85,29 +97,13 @@ function Header() {
                             }
                             
                             <Nav className={styles.nav2 + " justify-content-end " }>
-                                <Nav.Link style={{ color : link_color , borderBottomColor: link_color }} className={styles.navItem2 + " px-0 mx-3 " + styles.active} href="#">HOME</Nav.Link>
+                                <Nav.Link style={{ color : link_color , borderBottomColor: link_color }} className={styles.navItem2 + " px-0 mx-3 " + styles.active} href="/">HOME</Nav.Link>
 
-                                {/* <NavDropdown
-                                    className={styles.navItem2 + " px-0 mx-3 -danger"}
-                                    title="ABOUT"
-                                    
-                                    menuVariant="dark"
-                                >
-                                    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.2">
-                                        Another action
-                                    </NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                                    <NavDropdown.Item href="#action/3.4">
-                                        Separated link
-                                    </NavDropdown.Item>
-                                </NavDropdown> */}
-
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">ABOUT</Nav.Link>
+                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="/about">ABOUT</Nav.Link>
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">JOIN US</Nav.Link>
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">CLIENT CORNER</Nav.Link>
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">MEDIA CENTRE</Nav.Link>
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">CONTACT US</Nav.Link>
+                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="/contact-us">CONTACT US</Nav.Link>
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} href="#">OFFERS</Nav.Link>
                             </Nav>
                         </span>
@@ -115,7 +111,8 @@ function Header() {
                 </Container>
             </Navbar>
         </header>
+        </>
     );
   }
-
+  
 export default Header;
