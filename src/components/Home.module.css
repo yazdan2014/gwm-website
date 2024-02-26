@@ -13,6 +13,12 @@
     height: auto;
 }
 
+.carouselItem2{
+    background-image: linear-gradient(rgb(0,145,62 , 0.5), rgb(0,145,62 , 0.2) , rgb(0,145,62 , 0.2) , rgb(0,145,62 , 0.5));
+    position: relative; overflow: hidden;
+}
+
+
 .carousel::before{
     background: url('../assets/home/left-pattern_800.png')!important;
     position: absolute;
@@ -25,10 +31,26 @@
     font-family: "Roboto Condensed", sans-serif;
     width: 100%;
 }
-.section1 p{
+ p{
     color: gray;
 }
 
-.section1 h1{
+h1{
     color: #00913E;
 }
+
+.icon{
+
+}
+
+.icon_text h4{
+    color: #72B62B;
+    font-weight: 100 !important;
+}
+
+.icon_text p{
+    color: gray;
+    font-size: 16px;
+    font-weight: 100;
+}
+
