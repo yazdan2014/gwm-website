@@ -52,7 +52,7 @@ function Home() {
         </OwlCarousel>
       
 
-        <section className={styles.section1 + " fs-5 fw-light text-muted"}>
+        <section className={styles.section1 + " fs-5  text-muted"}>
           <Container >
               <Row>
                 <h1 className='text-center'>Welcome to GWM</h1>
@@ -169,7 +169,7 @@ function Home() {
         </section>
 
         <section>
-          <Container className='py-4 w-50 text-center fs-5 fw-lighter text-muted'>
+          <Container className='py-4 w-50 text-center fs-5  text-muted'>
             <h1 className='pb-4'>HAPPENINGS IN GWM</h1>
             <Row className=' text-center'>
               

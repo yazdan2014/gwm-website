@@ -22,7 +22,7 @@ import Col from 'react-bootstrap/Col'
 
 import Jumbo from './Layouts/components/Jumbo'
 
-import skyline from '../assets/about/skyline.svg'
+import skyline from '../assets/about/skyline.png'
 
 function About() {
     return (  
