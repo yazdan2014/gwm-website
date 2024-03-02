@@ -21,6 +21,10 @@ import contactus from '../assets/home/contactus.jpg'
 import latestnews from '../assets/home/latestnews.jpg'
 import partners from '../assets/home/partners.jpg'
 
+import web1 from '../assets/home/Web1.jpg'
+import web2 from '../assets/home/Web2.jpg'
+import web3 from '../assets/home/Web3.jpg'
+
 import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -41,13 +45,13 @@ function Home() {
 
         <OwlCarousel className={styles.carousel} dots={false} loop autoplay center={true} items={1} >
             <div className={'item '+ styles.carouselItem}>
-              <Image className={styles.carouselImages} src={business_woman} fluid/>
+              <Image className={styles.carouselImages} src={web3} fluid/>
             </div>
             <div className={'item '+ styles.carouselItem}>
-                <Image className={styles.carouselImages} src={kiwi} fluid />
+                <Image className={styles.carouselImages} src={web2} fluid />
             </div>
             <div className={'item '+ styles.carouselItem}>
-                <Image className={styles.carouselImages} src={clock} fluid/>
+                <Image className={styles.carouselImages} src={web1} fluid/>
             </div>
         </OwlCarousel>
       

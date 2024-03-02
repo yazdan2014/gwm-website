@@ -6,12 +6,16 @@
 
 
 .carouselImages{
+    object-fit: cover;
     position:relative;
     z-index:-1;
     display:block;
-
+    background-size: contain;
     max-width: 100%;
     height: auto;
+
+    max-width: 100%;
+    max-height: 850px;
 }
 
 .carouselItem2{
@@ -46,10 +50,12 @@ h1{
 
 .icon_text h4{
     color: #72B62B;
+    font-weight: 400 !important;
 }
 
 .icon_text p{
     color: gray;
     font-size: 16px;
+    font-weight: 300;
 }
 

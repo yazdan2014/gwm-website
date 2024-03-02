@@ -104,7 +104,7 @@ function Header({header_image}) {
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">CLIENT CORNER</Nav.Link>
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">MEDIA CENTRE</Nav.Link>
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="/contact-us">CONTACT US</Nav.Link>
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} href="#">OFFERS</Nav.Link>
+                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} href="#">ONE CLICK PICKUP</Nav.Link>
                             </Nav>
                         </span>
                     </Navbar.Collapse>

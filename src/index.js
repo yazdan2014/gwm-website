@@ -44,6 +44,10 @@ export default function App() {
             <Route path='' element={<Home />} />
             <Route path='/about' element={<About />} />
             <Route path='/contact-us' element={<ContactUs />} />
+            <Route path='/collection' element={<ContactUs />} />
+            <Route path='/privacy-policy' element={<ContactUs />} />
+            <Route path='/recycle-solution' element={<ContactUs />} />
+            <Route path='/blog' element={<ContactUs />} />
           </Route>
         </Routes>
       </BrowserRouter>

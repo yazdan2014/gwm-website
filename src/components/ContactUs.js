@@ -34,72 +34,65 @@ function About() {
       
 
         <section className={styles.section1 + ""}>
-          <Container >
-              <Row>
-                
-              <h1 className='text-center'>Why GWM</h1>
 
-              <Accordion>
-                <Accordion.Item eventKey="0">
-                  <Accordion.Header>Accordion Item #1</Accordion.Header>
-                  <Accordion.Body>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in
-                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </Accordion.Body>
-                </Accordion.Item>
-                <Accordion.Item eventKey="1">
-                  <Accordion.Header>Accordion Item #2</Accordion.Header>
-                  <Accordion.Body>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                    minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                    aliquip ex ea commodo consequat. Duis aute irure dolor in
-                    reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                    culpa qui officia deserunt mollit anim id est laborum.
-                  </Accordion.Body>
-                </Accordion.Item>
-              </Accordion>
-
-                
-                <p className='text-center fs-5 fw-lighter text-muted'>
-                  <br/><br/>
-                    At the northernmost part of the United Arab Emirates (UAE) 
-                    lies Ras Al Khaimah, one of the leading destinations for business set-up in the UAE. <br/><br/>
-
-                    The emirate prides on its proven record of safety and stability as 
-                    backed by renowned credit rating agencies such as Fitch Ratings and
-                    S&P. With logistical hubs such as seaports, international airport
-                    and multi-lane superhighways, companies easily access the trade
-                    flows between the east and the west.<br/><br/>
-
-                    <div className={styles.bhub}>
-                        <Container className='text-center py-5'>
-                            <h3 className='text-white mb-5' style={{fontSize:"32px",fontWeight:"200"}}>
-                                A WORLD-CLASS BUSINESS AND INDUSTRIAL HUB
-                            </h3>
-                        </Container>
-                    </div>
-                    But is business all that it has to offer? Beyond Ras Al Khaimah’s
-                    business-friendly façade is a perfect place for you and your family to live.
-                    Experience a rich local culture, scenic view of majestic mountains, relaxed
-                    seaside ambiance, and a year-round sunny weather for a cost that’s way below the
-                    average major cities. You will also get access to high-quality yet affordable
-                    housing, shopping malls, premier educational institutions and advanced medical facilities.<br/><br/>
-
-                    We aim to make running and setting up your business in the UAE as easy as 1, 2, 3, while ensuring full compliance with the UAE’s rules and regulations.
-                </p>
-              </Row>
-          </Container>
-          
-          <div className={styles.bhub2}>
+            
+            <div className={styles.bhub2}>
                 <Image className={styles.skyline} src={skyline} alt='skyline'/>
             </div>
+            <Container >
+                <Row>
+                  
+                <h1 className='text-center mb-5'>Why GWM ?</h1>
+                <Accordion>
+                  <Accordion.Item eventKey="0">
+                    <Accordion.Header>1. Reliable Service</Accordion.Header>
+                    <Accordion.Body>
+                      We assure over 500 satisfied customers, offering complimentary, hygienic containers for your used cooking oil.
+                    </Accordion.Body>
+                  </Accordion.Item>
+                  
+                  <Accordion.Item eventKey="1">
+                    <Accordion.Header>2. Quick Response</Accordion.Header>
+                    <Accordion.Body>
+                      In less than 24 hours, our team is at your doorstep for efficient oil collection.
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="2">
+                    <Accordion.Header>3. Trained Professionals</Accordion.Header>
+                    <Accordion.Body>
+                      Our skilled staff is well-trained in safe and responsible used cooking oil handling.
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="3">
+                    <Accordion.Header>4. User-Friendly Ordering</Accordion.Header>
+                    <Accordion.Body>
+                      Utilize our custom software to easily place your oil collection orders.
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="4">
+                    <Accordion.Header>5. Cutting-edge Technology</Accordion.Header>
+                    <Accordion.Body>
+                      Benefit from our proprietary software solution developed to streamline the ordering process.
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item eventKey="5">
+                    <Accordion.Header>6. Effortless Preparation</Accordion.Header>
+                    <Accordion.Body>
+                      Minimal preparation is needed for oil collection – just pour and we take care of the rest.
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+
+
+                </Accordion>
+
+                </Row>
+            </Container>
+          
         </section>
 
         <section>
