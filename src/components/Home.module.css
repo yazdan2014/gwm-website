@@ -4,6 +4,7 @@
 }
 
 
+
 .carouselImages{
     position:relative;
     z-index:-1;
@@ -28,7 +29,7 @@
 .section1{
     padding-top: 50px;
     background: url('../assets/home/tpattern-bg.jpg') center center repeat;
-    font-family: "Roboto Condensed", sans-serif;
+    font-family: Rubik;
     width: 100%;
 }
  p{

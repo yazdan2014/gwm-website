@@ -8,6 +8,13 @@ import React, { Component }  from 'react';
 const Layout = () => {
   return (
     <>
+      <style>
+          {
+            `body{
+                font-family: Rubik;
+            }`
+          }
+      </style>
       <header>
         <Header header_image={kiwi} />
       </header>
