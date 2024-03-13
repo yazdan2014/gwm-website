@@ -33,18 +33,17 @@ function About() {
         <section>
             <Container className='py-5 my-3'>
               <Row>
-                <h2 className='text-center mb-4'>Discover our comprehensive range of products and services</h2>
-                <Col md={5}>
+                <h2 className='text-center mb-5'>Discover our comprehensive range of products and services</h2>
+                <Col md={5} className='mb-5'>
                 <iframe 
-                  width="560" 
-                  height="315" 
+                  style={{width:"100%",height:"100%" , minHeight:"290px"}}
                   src="https://www.youtube.com/embed/8krzjlHaGes?si=uiVzDikJlCcjj264" 
                   title="YouTube video player" 
                   frameborder="0" 
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
                   allowfullscreen></iframe>
                 </Col>
-                <Col md={7}>
+                <Col md={7} className='px-5'>
                   <p className=' lh-lg text-justify'>
                     In our commitment to environmental sustainability, we actively engage in the collection and 
                     recycling of used cooking oil (UCO). With a clear understanding of the adverse impact that 
@@ -52,7 +51,16 @@ function About() {
                     to provide a responsible solution. By collecting used cooking oil from various sources such
                     as households, restaurants, hotels, and food industries, we contribute to reducing carbon
                     emissions and minimizing the strain on valuable resources.
+                    <br/>
                   </p>
+                  <Button variant='warning text-white '>
+                    Request Collection
+                  </Button>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
+                  <br/>
                 </Col>
               </Row>
             </Container>
