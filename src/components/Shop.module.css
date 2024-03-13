@@ -1,0 +1,64 @@
+.section1{
+    padding-top: 50px;
+    background: url('../assets/home/tpattern-bg.jpg') center center repeat;
+    font-family: Rubik;
+    width: 100%;
+    
+    background-position: center;
+    background-attachment: fixed;
+    padding-bottom: 80px;
+}
+
+.section2{
+    padding-top: 50px;
+    padding-bottom: 80px;
+}
+
+section  p{
+    color: gray;
+    text-align: justify;
+}
+
+h1 , h2{
+    color: #00913E;
+}
+
+.icon{
+
+}
+
+.icon_text h4{
+    color: #72B62B;
+    font-weight: 100 !important;
+}
+
+.icon_text p{
+    color: gray;
+    font-size: 16px;
+    font-weight: 100;
+}
+
+.bhub{
+    min-height: 250px;
+    z-index: -1;
+    background-image:  linear-gradient(rgb(14, 58, 92, 0.5), rgb(14, 58, 92 , 0.5) ,rgb(14, 58, 92 , 0.5)) ,url("../assets/about/Wolfsburgskyline2.jpg") ;
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;  
+    margin-bottom: 50px;
+}
+.bhub2{
+    min-height: 450px;
+    z-index: -1;
+    /* background-image:  url("../assets/about/skyline.svg") ; */
+    margin-bottom: 50px;
+}
+
+.skyline{
+    width: 100%;
+    max-height: 1000px;
+    margin-top: 80px;
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;  
+}
