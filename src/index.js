@@ -9,7 +9,7 @@ import Layout from './components/Layouts/Layout';
 import Home from './components/Home';
 import About from './components/About';
 import ContactUs from './components/ContactUs';
-
+import Collection from './components/Collection'
 
 import NoPage from './components/Layouts/NoPageFound';
 
@@ -44,7 +44,7 @@ export default function App() {
             <Route path='' element={<Home />} />
             <Route path='/about' element={<About />} />
             <Route path='/contact-us' element={<ContactUs />} />
-            <Route path='/collection' element={<ContactUs />} />
+            <Route path='/collection' element={<Collection />} />
             <Route path='/privacy-policy' element={<ContactUs />} />
             <Route path='/recycle-solution' element={<ContactUs />} />
             <Route path='/blog' element={<ContactUs />} />

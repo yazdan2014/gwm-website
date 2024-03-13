@@ -11,9 +11,9 @@ import { faLocationDot , faPhone , faIndustry, faTreeCity, faEnvelope } from '@f
 
 import Image from 'react-bootstrap/Image';
 
-import styles from './ContactUs.module.css'
+import styles from './Collection.module.css'
 
-import headquarter from '../assets/contactus/headquarter.jpeg'
+import van from '../assets/collection/van.png'
 
 import Container from 'react-bootstrap/esm/Container'
 import Row from 'react-bootstrap/Row'
@@ -28,74 +28,36 @@ function About() {
     return (  
       <>
 
-        <Jumbo jumbo_image={headquarter}/>
+        <Jumbo jumbo_image={van}/>
       
-        <section className={styles.section1 + ""}>
-        <Container>
-              <Row className='mb-5'>
-                <iframe 
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1216.2506141615966!2d10.8644933!3d52.43383452923126!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47af9116ac249099%3A0xd70809581ce432cd!2sHeinrichswinkel%2014%2C%2038448%20Wolfsburg%2C%20Germany!5e0!3m2!1sen!2s!4v1710328472297!5m2!1sen!2s" 
-                width="600" height="450" style={{border:0}}
-                 allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-              </Row>
-              <br/>
-              <br/>
+        <section>
+            <Container className='py-5 my-3'>
               <Row>
-                <Col md={3}>
-                  <Row>
-                    <Col className='text-end' sm={4}>
-                      <FontAwesomeIcon size={'lg'} className={'text-success ' } style={{width:"25px",height:"auto"}} icon={faIndustry}/>
-                    </Col>
-                    <Col sm={8}>
-                      <h4 >Factory</h4>
-                      <p className='text-muted'>Ziegeleiweg 1, 19273 Amt Neuhaus, Germany</p>
-                    </Col>
-                  </Row>
+                <h2 className='text-center mb-4'>Discover our comprehensive range of products and services</h2>
+                <Col md={5}>
+                <iframe 
+                  width="560" 
+                  height="315" 
+                  src="https://www.youtube.com/embed/8krzjlHaGes?si=uiVzDikJlCcjj264" 
+                  title="YouTube video player" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  allowfullscreen></iframe>
                 </Col>
-                <Col md={3}>
-                  <Row>
-                    <Col className='text-end' sm={4}>
-                    <FontAwesomeIcon size={'lg'} className={'text-success ' } style={{width:"25px",height:"auto"}} icon={faTreeCity}/>
-                    </Col>
-                    <Col sm={8}>
-                      <h4>HEADQUARTER</h4>
-                      <p className='text-muted'>Ziegeleiweg 1, 19273 Amt Neuhaus, Germany</p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col md={3}>
-                  <Row>
-                    <Col className='text-end' sm={4}>
-                      <FontAwesomeIcon size={'lg'} className={'text-success ' } style={{width:"25px",height:"auto"}} icon={faPhone}/>
-                    </Col>
-                    <Col sm={8}>
-                      <h4 >CALL US</h4>
-                      <p className='text-muted'>+49 (0) 5363 - 810 3 750</p>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col md={3}>
-                  <Row>
-                    <Col className='text-end' sm={4}>
-                      <FontAwesomeIcon size={'lg'} className={'text-success ' } style={{width:"25px",height:"auto"}} icon={faEnvelope}/>
-                    </Col>
-                    <Col sm={8}>
-                      <h4>EMAIL</h4>
-                      <p className='text-muted'>info@germanwm.de</p>
-
-                    </Col>
-                  </Row>
+                <Col md={7}>
+                  <p className=' lh-lg text-justify'>
+                    In our commitment to environmental sustainability, we actively engage in the collection and 
+                    recycling of used cooking oil (UCO). With a clear understanding of the adverse impact that 
+                    improperly discarded cooking oil can have on our environment, we have embarked on a mission 
+                    to provide a responsible solution. By collecting used cooking oil from various sources such
+                    as households, restaurants, hotels, and food industries, we contribute to reducing carbon
+                    emissions and minimizing the strain on valuable resources.
+                  </p>
                 </Col>
               </Row>
             </Container>
-        </section>
-
-        <section className='pb-5 my-5'>
-
-            
-            <div className={styles.bhub2 + ' mb-5 pb-5'}>
-                <Image className={styles.skyline} src={skyline} alt='skyline'/>
-            </div>
+          </section>
+        <section className={styles.section1 + ""}>
             <Container >
                 <Row>
                   
@@ -149,10 +111,7 @@ function About() {
 
                 </Row>
             </Container>
-          
-        </section>
 
-        <section>
         </section>
 
       </>

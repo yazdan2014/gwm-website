@@ -29,6 +29,13 @@ import { NavLink } from 'react-router-dom';
 function Header({header_image}) {
     let [header_class, setHeaderClass] = useState(["" , true, '300px'])
     let [link_color, setLinkColor] = useState('white')
+    
+    const mstyle = {
+        active_link:{
+            borderBottomColor: link_color
+        }
+    }
+    console.log(window.location.pathname )
     useEffect(() => {
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", () =>{
@@ -55,6 +62,7 @@ function Header({header_image}) {
             });
         }
       }, []);
+      
 
     return (
         <>
@@ -70,8 +78,8 @@ function Header({header_image}) {
                         <span className='mr-auto'>
                             { header_class[1] &&
                             <Nav className={styles.nav1 + " justify-content-end"} >
-                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#home"><FontAwesomeIcon icon={faPhoneVolume} /> +971 7 204 1111</Nav.Link>
-                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#home"><FontAwesomeIcon icon={faCircleQuestion} /> FAQ</Nav.Link>
+                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#home"><FontAwesomeIcon icon={faPhoneVolume} /> +49 (0) 5363 - 810 3 750</Nav.Link>
+                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="/contact-us"><FontAwesomeIcon icon={faCircleQuestion} /> FAQ</Nav.Link>
                                 <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#link">PORTAL 360</Nav.Link>
                                 <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#">REGULATIONS</Nav.Link>
                                 <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#">CAREERS</Nav.Link>
@@ -96,15 +104,15 @@ function Header({header_image}) {
                             </Nav>
                             }
                             
-                            <Nav className={styles.nav2 + " justify-content-end " }>
-                                <Nav.Link style={{ color : link_color , borderBottomColor: link_color }} className={styles.navItem2 + " px-0 mx-3 " + styles.active} href="/">HOME</Nav.Link>
+                            <Nav activeKey={window.location.pathname} className={styles.nav2 + " justify-content-end " }>
+                                <Nav.Link  style={{ color : link_color , ...(window.location.pathname === '/' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3 "} href="/">HOME</Nav.Link>
 
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="/about">ABOUT</Nav.Link>
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">JOIN US</Nav.Link>
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">CLIENT CORNER</Nav.Link>
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">MEDIA CENTRE</Nav.Link>
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="/contact-us">CONTACT US</Nav.Link>
-                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} href="#">ONE CLICK PICKUP</Nav.Link>
+                                <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/about' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="/about">ABOUT</Nav.Link>
+                                <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/collection' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="/collection">COLLECTION</Nav.Link>
+                                <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">SHOP</Nav.Link>
+                                <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/recyclesolution' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="#">RECYCLE SOLUTION</Nav.Link>
+                                <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/contact-us' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="/contact-us">CONTACT US</Nav.Link>
+                                <Nav.Link style={{ color : link_color  }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} href="#">ONE CLICK PICKUP</Nav.Link>
                             </Nav>
                         </span>
                     </Navbar.Collapse>
