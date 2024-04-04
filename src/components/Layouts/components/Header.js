@@ -8,6 +8,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import InputGroup from 'react-bootstrap/InputGroup';
 
+import Modal from 'react-bootstrap/Modal';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleQuestion, faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
 
@@ -15,6 +17,7 @@ import logo from '../../../assets/logosite.png';
 
 import styles from './Header.module.css';
 
+import StepWizard from "react-step-wizard";
 
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -23,8 +26,10 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import kiwi from '../../../assets/home/kiwi.jpg'
 import Image from 'react-bootstrap/Image';
 
-import { NavLink } from 'react-router-dom';
 
+import Wizard from './stepwizard/wizard';
+
+import { NavLink } from 'react-router-dom';
 
 function Header({header_image}) {
     let [header_class, setHeaderClass] = useState(["" , true, '300px'])
@@ -35,6 +40,12 @@ function Header({header_image}) {
             borderBottomColor: link_color
         }
     }
+    
+    const [show, setShow] = useState(false);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    
     console.log(window.location.pathname )
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -112,13 +123,29 @@ function Header({header_image}) {
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">SHOP</Nav.Link>
                                 <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/recyclesolution' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="#">RECYCLE SOLUTION</Nav.Link>
                                 <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/contact-us' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="/contact-us">CONTACT US</Nav.Link>
-                                <Nav.Link style={{ color : link_color  }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} href="#">ONE CLICK PICKUP</Nav.Link>
+                                <Nav.Link style={{ color : link_color  }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} onClick={handleShow} href="#">ONE CLICK PICKUP</Nav.Link>
                             </Nav>
                         </span>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
         </header>
+        <Modal size='lg' show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+            <Modal.Title>ONE CLICK PICKUP</Modal.Title>
+            </Modal.Header>
+            <Modal.Body size='lg'>
+                <Wizard/>
+            </Modal.Body>
+            {/* <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+                Close
+            </Button>
+            <Button variant="primary" onClick={handleClose}>
+                Save Changes
+            </Button>
+            </Modal.Footer> */}
+        </Modal>
         </>
     );
   }
