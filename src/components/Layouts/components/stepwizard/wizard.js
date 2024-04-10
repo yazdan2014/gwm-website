@@ -6,14 +6,22 @@ import Plugs from './Plugs';
 
 import styles from './wizard.less';
 import transitions from './transitions.less';
+import Cookies from 'js-cookie';
+
+import axios  from 'axios';
+// axios.defaults.withCredentials = true;
+
+
 /* eslint react/prop-types: 0 */
 
 /**
  * A basic demonstration of how to use the step wizard
  */
 const Wizard = () => {
-    const [state, updateState] = useState({
+    var [state, updateState] = useState({
         form: {},
+        stepOne:{},
+        stepTwo:{},
         transitions: {
             enterRight: `${transitions.animated} ${transitions.enterRight}`,
             enterLeft: `${transitions.animated} ${transitions.enterLeft}`,
@@ -31,6 +39,24 @@ const Wizard = () => {
         updateState({
             ...state,
             form,
+        });
+    };
+    const updateStepOneError = (value) => {
+        const { stepOne } = state;
+
+        stepOne['error'] = value;
+        updateState({
+            ...state,
+            stepOne,
+        });
+    };
+    const updateStepTwoError = (value) => {
+        const { stepTwo } = state;
+
+        stepTwo['error'] = value;
+        updateState({
+            ...state,
+            stepTwo,
         });
     };
 
@@ -58,10 +84,11 @@ const Wizard = () => {
                             // nav={<Nav />}
                             instance={setInstance}
                         >
-                            <First hashKey={'FirstStep'} update={updateForm} />
-                            <Second form={state.form} />
-                            <Progress stepName='progress' />
-                            <Last hashKey={'TheEnd!'} />
+                            <First hashKey={'FirstStep'} update={updateForm} error={state.stepOne}/>
+                            <Progress stepName='progress' updateForm={updateForm}  form={state.form} update={updateStepOneError} />
+                            <Second form={state.form} update={updateForm} error={state.stepTwo}/>
+                            <Progress2 stepName='progress'  form={state.form} update={updateStepTwoError} />
+                            <Third hashKey={'TheEnd'} />
                         </StepWizard>
                     </div>
                 </div>
@@ -128,52 +155,96 @@ const First = props => {
         props.update(e.target.name, e.target.value);
     };
 
+    
+
+    console.log(props.error.error)
+
     return (
         <div>
 
             <label className='mb-4'>Enter your email address</label>
-            <input type='text' className='form-control' name='email' placeholder='example@mail.com'
-                onChange={update} />
+            
+            
+            <input id="validationServer03" type='text' className={'form-control '+(props.error.error  ? 'is-invalid':'')} name='email' placeholder='example@mail.com'
+                onChange={update} required aria-describedby="validationServerFeedback" />
+            <div id="validationServerFeedback" className="invalid-feedback">
+                {props.error.error}
+            </div>  
             <Stats step={1} {...props} />
         </div>
     );
 };
 
 const Second = props => {
-    const validate = () => {
-        if (confirm('Are you sure you want to go back?')) { // eslint-disable-line
-            props.previousStep();
-        }
+    const update = (e) => {
+        props.update(e.target.name, e.target.value);
     };
+    console.log(props.error.error)
 
     return (
         <div>
-            { props.form.firstname && <h3>Hey {props.form.firstname}! 👋</h3> }
-            I've added validation to the previous button.
-            <Stats step={2} {...props} previousStep={validate} />
+
+
+            <label className='mb-4'>Please enter your verification code</label>
+            
+            
+            <input style={{width:"20%"}} id="validationServer03" type='text' className={'form-control '+(props.error.error  ? 'is-invalid':'')} name='vfc'
+                onChange={update} required aria-describedby="validationServerFeedback" />
+            <div id="validationServerFeedback" className="invalid-feedback">
+                {props.error.error}
+            </div>  
+
+            <Stats step={2} {...props} />
         </div>
     );
 };
 
+
+
 const Progress = (props) => {
+    const update = (val) => {
+        props.update(val);
+    };
+
     const [state, updateState] = useState({
         isActiveClass: '',
         timeout: null,
+        message:"Email validation in progress"
     });
 
     useEffect(() => {
         const { timeout } = state;
 
         if (props.isActive && !timeout) {
-            updateState({
-                isActiveClass: styles.loaded,
-                timeout: setTimeout(() => {
-                    props.nextStep();
-                }, 3000),
-            });
+            axios.get(`http://10.100.18.13:1020/api/Email/VerifyEmail`,{headers:{'verifyEmail':props.form.email}})
+            .then(res => {
+                if(res.data.responseCode == 200){
+                    props.updateForm("id",res.data.data.id)
+                    updateState({
+                        message:"Email validated succesfully",
+                        isActiveClass: styles.loaded,
+                        timeout: setTimeout(() => {
+                            props.nextStep();
+                        }, 1500),
+                    });
+                }else{
+                    update(res.data.message)
+                    // props.update(stepone.error, res.message);
+                    updateState({
+                        message:"Email validation in progress",
+                        isActiveClass: styles.loaded,
+                        timeout: setTimeout(() => {
+                            props.previousStep();
+                        }, 500),
+                    });
+                }
+                console.log(res);
+                console.log(res.data);
+            })
         } else if (!props.isActive && timeout) {
             clearTimeout(timeout);
             updateState({
+                message:"Email validation in progress",
                 isActiveClass: '',
                 timeout: null,
             });
@@ -182,7 +253,7 @@ const Progress = (props) => {
 
     return (
         <div className={styles['progress-wrapper']}>
-            <p className='text-center'>Automated Progress...</p>
+            <p className='text-center'>{state.message}</p>
             <div className={`${styles.progress} ${state.isActiveClass}`}>
                 <div className={`${styles['progress-bar']} progress-bar-striped`} />
             </div>
@@ -190,15 +261,84 @@ const Progress = (props) => {
     );
 };
 
-const Last = (props) => {
+
+const Progress2 = (props) => {
+    const update = (val) => {
+        props.update(val);
+    };
+    console.log("HEREEE")
+    console.log(props.form)
+    const [state, updateState] = useState({
+        isActiveClass: '',
+        timeout: null,
+        message:"Email verification in progress"
+    });
+
+    useEffect(() => {
+        const { timeout } = state;
+
+        if (props.isActive && !timeout) {
+            axios.post(`http://10.100.18.13:1020/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
+            .then(res => {
+                if(res.data.responseCode == 200){
+                    Cookies.set('Authorization', "Bearer " + res.data.value.response.token, { expires: 100 });
+                    Cookies.set('refreshToken', res.data.value.response.refreshToken, { expires: 100 });
+                    Cookies.set('displayName', res.data.value.response.displayName, { expires: 100 });
+
+                    updateState({
+                        message:"Email verified succesfully",
+                        isActiveClass: styles.loaded,
+                        timeout: setTimeout(() => {
+                            props.nextStep();
+                        }, 1500),
+                    });
+                }else{
+                    update(res.data.message)
+                    // props.update(stepone.error, res.message);
+                    updateState({
+                        message:"Email verification in progress",
+                        isActiveClass: styles.loaded,
+                        timeout: setTimeout(() => {
+                            props.previousStep();
+                        }, 500),
+                    });
+                }
+                console.log(res);
+                console.log(res.data);
+            })
+        } else if (!props.isActive && timeout) {
+            clearTimeout(timeout);
+            updateState({
+                message:"Email verification in progress",
+                isActiveClass: '',
+                timeout: null,
+            });
+        }
+    });
+
+    return (
+        <div className={styles['progress-wrapper']}>
+            <p className='text-center'>{state.message}</p>
+            <div className={`${styles.progress} ${state.isActiveClass}`}>
+                <div className={`${styles['progress-bar']} progress-bar-striped`} />
+            </div>
+        </div>
+    );
+};
+const Third = (props) => {
     const submit = () => {
-        alert('You did it! Yay!') // eslint-disable-line
+        axios.get(`http://10.100.18.13:1020/api/Email/GetData`, {headers:{
+            "Authorization": Cookies.get("Authorization")
+        }})
+        .then(res => {
+            console.log(res)
+        })
     };
 
     return (
         <div>
             <div className={'text-center'}>
-                <h3>This is the last step in this example!</h3>
+                <h3>HELLO {Cookies.get('displayName')} This is the last step in this example!</h3>
                 <hr />
                 <Plugs />
             </div>
