@@ -7,12 +7,20 @@ import Plugs from './Plugs';
 import styles from './wizard.less';
 import transitions from './transitions.less';
 import Cookies from 'js-cookie';
+import OtpInput from 'react-otp-input';
+
+import { Button,ButtonGroup, Divider, Text, Image, Stack, Heading ,Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
+
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 import axios  from 'axios';
+import { Container } from 'react-bootstrap';
+import { Row ,Col} from 'react-bootstrap';
 // axios.defaults.withCredentials = true;
 
 
-/* eslint react/prop-types: 0 */
 
 /**
  * A basic demonstration of how to use the step wizard
@@ -22,6 +30,7 @@ const Wizard = () => {
         form: {},
         stepOne:{},
         stepTwo:{},
+        products:{},
         transitions: {
             enterRight: `${transitions.animated} ${transitions.enterRight}`,
             enterLeft: `${transitions.animated} ${transitions.enterLeft}`,
@@ -50,6 +59,17 @@ const Wizard = () => {
             stepOne,
         });
     };
+
+    const updateProducts = (value)=>{
+        const { products } = state;
+
+        products['products'] = value;
+        updateState({
+            ...state,
+            products,
+        });
+    }
+
     const updateStepTwoError = (value) => {
         const { stepTwo } = state;
 
@@ -87,8 +107,8 @@ const Wizard = () => {
                             <First hashKey={'FirstStep'} update={updateForm} error={state.stepOne}/>
                             <Progress stepName='progress' updateForm={updateForm}  form={state.form} update={updateStepOneError} />
                             <Second form={state.form} update={updateForm} error={state.stepTwo}/>
-                            <Progress2 stepName='progress'  form={state.form} update={updateStepTwoError} />
-                            <Third hashKey={'TheEnd'} />
+                            <Progress2 hashKey='progress2'  form={state.form} update={updateStepTwoError} updateProducts={updateProducts}/>
+                            <Third hashKey={'step3'} products={state.products} updateProducts={updateProducts}/>
                         </StepWizard>
                     </div>
                 </div>
@@ -151,6 +171,16 @@ const Stats = ({
 /** Steps */
 
 const First = props => {
+    
+    useEffect(()=>{
+        console.log(Cookies.get('Authorization'))
+        if(Cookies.get('Authorization') ){
+            console.log("AREEMIAD")
+            props.goToStep("step3")
+        }
+        
+    }, [])
+
     const update = (e) => {
         props.update(e.target.name, e.target.value);
     };
@@ -176,8 +206,10 @@ const First = props => {
 };
 
 const Second = props => {
+    const [otp, setOtp] = useState('');
     const update = (e) => {
-        props.update(e.target.name, e.target.value);
+        setOtp(e)
+        props.update("vfc", e);
     };
     console.log(props.error.error)
 
@@ -187,10 +219,19 @@ const Second = props => {
 
             <label className='mb-4'>Please enter your verification code</label>
             
-            
-            <input style={{width:"20%"}} id="validationServer03" type='text' className={'form-control '+(props.error.error  ? 'is-invalid':'')} name='vfc'
-                onChange={update} required aria-describedby="validationServerFeedback" />
-            <div id="validationServerFeedback" className="invalid-feedback">
+            {/* <input style={{width:"20%"}} id="validationServer03" type='text' className={'form-control '+(props.error.error  ? 'is-invalid':'')} name='vfc'
+                onChange={update} required aria-describedby="validationServerFeedback" /> */}
+            <OtpInput
+                aria-describedby="verificationserverfeedback"
+                value={otp}
+                onChange={update}
+                numInputs={5}
+                renderSeparator={<span> </span>}
+                inputStyle={{width:"50px",width:"50px"}}
+                renderInput={(props) => <input   class={"m-2 text-center form-control rounded "+(props.error  ? 'is-invalid':'')}   {...props} />}
+            />
+
+            <div id="mx-2 verificationserverfeedback" className='text-danger'>
                 {props.error.error}
             </div>  
 
@@ -266,6 +307,9 @@ const Progress2 = (props) => {
     const update = (val) => {
         props.update(val);
     };
+    const updateProducts = (val)=>{
+        props.updateProducts(val)
+    }
     console.log("HEREEE")
     console.log(props.form)
     const [state, updateState] = useState({
@@ -278,13 +322,12 @@ const Progress2 = (props) => {
         const { timeout } = state;
 
         if (props.isActive && !timeout) {
-            axios.post(`http://10.100.18.13:1020/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
-            .then(res => {
-                if(res.data.responseCode == 200){
-                    Cookies.set('Authorization', "Bearer " + res.data.value.response.token, { expires: 100 });
-                    Cookies.set('refreshToken', res.data.value.response.refreshToken, { expires: 100 });
-                    Cookies.set('displayName', res.data.value.response.displayName, { expires: 100 });
-
+            if(Cookies.get("Authorization")){
+                axios.get(`http://10.100.18.13:1020/api/Product/GetAllProducts`, {headers:{
+                    "Authorization": Cookies.get("Authorization")
+                }})
+                .then(res => {
+                    updateProducts(res.data.data.res)
                     updateState({
                         message:"Email verified succesfully",
                         isActiveClass: styles.loaded,
@@ -292,20 +335,46 @@ const Progress2 = (props) => {
                             props.nextStep();
                         }, 1500),
                     });
-                }else{
-                    update(res.data.message)
-                    // props.update(stepone.error, res.message);
-                    updateState({
-                        message:"Email verification in progress",
-                        isActiveClass: styles.loaded,
-                        timeout: setTimeout(() => {
-                            props.previousStep();
-                        }, 500),
-                    });
-                }
-                console.log(res);
-                console.log(res.data);
-            })
+                })        
+            }else{
+                axios.post(`http://10.100.18.13:1020/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
+                .then(res => {
+                    if(res.data.responseCode == 200){
+                        Cookies.set('Authorization', "Bearer " + res.data.value.response.token, { expires: 100 });
+                        Cookies.set('refreshToken', res.data.value.response.refreshToken, { expires: 100 });
+                        Cookies.set('displayName', res.data.value.response.displayName, { expires: 100 });
+
+                        
+
+                        axios.get(`http://10.100.18.13:1020/api/Product/GetAllProducts`, {headers:{
+                            "Authorization": Cookies.get("Authorization")
+                        }})
+                        .then(res => {
+                            updateProducts(res.data.data.res)
+                            updateState({
+                                message:"Email verified succesfully",
+                                isActiveClass: styles.loaded,
+                                timeout: setTimeout(() => {
+                                    props.nextStep();
+                                }, 1500),
+                            });
+                        })                        
+                    }else{
+                        console.log(res.data.message)
+                        update(res.data.message)
+                        // props.update(stepone.error, res.message);
+                        updateState({
+                            message:"Email verification in progress",
+                            isActiveClass: styles.loaded,
+                            timeout: setTimeout(() => {
+                                props.previousStep();
+                            }, 500),
+                        });
+                    }
+                    console.log(res);
+                    console.log(res.data);
+                })
+            }
         } else if (!props.isActive && timeout) {
             clearTimeout(timeout);
             updateState({
@@ -327,22 +396,62 @@ const Progress2 = (props) => {
 };
 const Third = (props) => {
     const submit = () => {
-        axios.get(`http://10.100.18.13:1020/api/Email/GetData`, {headers:{
-            "Authorization": Cookies.get("Authorization")
-        }})
-        .then(res => {
-            console.log(res)
-        })
+        
     };
-
+    const [listProducts, updateProducts] = useState()
+    useEffect(()=>{
+        if(!props.products['products']){
+            props.goToStep("progress2")
+            return
+        }else{
+            let new_list = props.products.products.map((product)=>{
+                console.log(product)
+                return (<div>
+                        <Card maxW='sm'>
+                            <CardBody>
+                                <Image
+                                objectFit='cover'
+                                boxSize='200px'
+                                src={product.photo}
+                                alt='Green double couch with wooden legs'
+                                borderRadius='md'
+                                />
+                                <Stack mt='6' spacing='3'>
+                                <Heading  size='md'>{product.title}</Heading>
+                                <Text >
+                                    sexy sax man
+                                    {product.inventory} available
+                                </Text>
+                                </Stack>
+                            </CardBody>
+                            <Divider />
+                            <CardFooter>
+                                {/* <ButtonGroup spacing='2'>
+                                <Button variant='solid' colorScheme='blue'>
+                                    Buy now
+                                </Button>
+                                <Button variant='ghost' colorScheme='blue'>
+                                    Add to cart
+                                </Button>
+                                </ButtonGroup> */}
+                            </CardFooter>
+                        </Card></div>)
+                    })
+                    
+            updateProducts(new_list)
+        }
+    },[props.products['products']])
     return (
         <div>
-            <div className={'text-center'}>
-                <h3>HELLO {Cookies.get('displayName')} This is the last step in this example!</h3>
-                <hr />
-                <Plugs />
-            </div>
-            <Stats step={4} {...props} nextStep={submit} />
+            <Container>
+                <Row className='px-5'>
+                    <OwlCarousel  loop dots={false} center={true} items={3} >
+                            {listProducts}
+                    </OwlCarousel>
+                </Row>
+            </Container>
+
+            <Stats step={3} {...props} nextStep={submit} />
         </div>
     );
 };

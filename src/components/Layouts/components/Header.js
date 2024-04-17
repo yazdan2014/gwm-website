@@ -130,7 +130,7 @@ function Header({header_image}) {
                 </Container>
             </Navbar>
         </header>
-        <Modal size='lg' show={show} onHide={handleClose}>
+        <Modal size='xl'  show={show} onHide={handleClose}>
             <Modal.Header closeButton>
             <Modal.Title>ONE CLICK PICKUP</Modal.Title>
             </Modal.Header>
