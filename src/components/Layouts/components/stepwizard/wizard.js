@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useRef, useEffect } from 'react';
 import StepWizard from 'react-step-wizard';
 
 import Nav from './nav';
@@ -18,8 +18,9 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import axios  from 'axios';
 import { Container } from 'react-bootstrap';
 import { Row ,Col} from 'react-bootstrap';
-// axios.defaults.withCredentials = true;
+import { useReducer } from 'react';
 
+import Form from 'react-bootstrap/Form';
 
 
 /**
@@ -82,7 +83,6 @@ const Wizard = () => {
 
     // Do something on step change
     const onStepChange = (stats) => {
-        // console.log(stats);
     };
 
     const setInstance = SW => updateState({
@@ -104,11 +104,14 @@ const Wizard = () => {
                             // nav={<Nav />}
                             instance={setInstance}
                         >
-                            <First hashKey={'FirstStep'} update={updateForm} error={state.stepOne}/>
-                            <Progress stepName='progress' updateForm={updateForm}  form={state.form} update={updateStepOneError} />
-                            <Second form={state.form} update={updateForm} error={state.stepTwo}/>
+                            <First hashKey={'step1'} update={updateForm} error={state.stepOne}/>
+                            <Progress hashKey='progress1' updateForm={updateForm}  form={state.form} update={updateStepOneError} />
+                            <Second hashKey={'step2'} form={state.form} update={updateForm} error={state.stepTwo}/>
                             <Progress2 hashKey='progress2'  form={state.form} update={updateStepTwoError} updateProducts={updateProducts}/>
-                            <Third hashKey={'step3'} products={state.products} updateProducts={updateProducts}/>
+                            <Third hashKey={'step3'} update={updateForm} error={state.stepOne}/>
+                            <Fourth hashKey={'step4'} form={state.form} update={updateForm} products={state.products} updateProducts={updateProducts}/>
+                            <ProgressFinal hashKey='progress3' form={state.form}/>
+                            <Final hashKey={'step5'} form={state.form}/>
                         </StepWizard>
                     </div>
                 </div>
@@ -173,9 +176,7 @@ const Stats = ({
 const First = props => {
     
     useEffect(()=>{
-        console.log(Cookies.get('Authorization'))
-        if(Cookies.get('Authorization') ){
-            console.log("AREEMIAD")
+        if(Cookies.get('Authorization') && props.isActive ){
             props.goToStep("step3")
         }
         
@@ -186,8 +187,6 @@ const First = props => {
     };
 
     
-
-    console.log(props.error.error)
 
     return (
         <div>
@@ -211,7 +210,6 @@ const Second = props => {
         setOtp(e)
         props.update("vfc", e);
     };
-    console.log(props.error.error)
 
     return (
         <div>
@@ -279,8 +277,6 @@ const Progress = (props) => {
                         }, 500),
                     });
                 }
-                console.log(res);
-                console.log(res.data);
             })
         } else if (!props.isActive && timeout) {
             clearTimeout(timeout);
@@ -310,8 +306,6 @@ const Progress2 = (props) => {
     const updateProducts = (val)=>{
         props.updateProducts(val)
     }
-    console.log("HEREEE")
-    console.log(props.form)
     const [state, updateState] = useState({
         isActiveClass: '',
         timeout: null,
@@ -323,19 +317,13 @@ const Progress2 = (props) => {
 
         if (props.isActive && !timeout) {
             if(Cookies.get("Authorization")){
-                axios.get(`http://10.100.18.13:1020/api/Product/GetAllProducts`, {headers:{
-                    "Authorization": Cookies.get("Authorization")
-                }})
-                .then(res => {
-                    updateProducts(res.data.data.res)
-                    updateState({
-                        message:"Email verified succesfully",
-                        isActiveClass: styles.loaded,
-                        timeout: setTimeout(() => {
-                            props.nextStep();
-                        }, 1500),
-                    });
-                })        
+                updateState({
+                    message:"Email verified succesfully",
+                    isActiveClass: styles.loaded,
+                    timeout: setTimeout(() => {
+                        props.nextStep();
+                    }, 1500),
+                });   
             }else{
                 axios.post(`http://10.100.18.13:1020/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
                 .then(res => {
@@ -345,22 +333,14 @@ const Progress2 = (props) => {
                         Cookies.set('displayName', res.data.value.response.displayName, { expires: 100 });
 
                         
-
-                        axios.get(`http://10.100.18.13:1020/api/Product/GetAllProducts`, {headers:{
-                            "Authorization": Cookies.get("Authorization")
-                        }})
-                        .then(res => {
-                            updateProducts(res.data.data.res)
-                            updateState({
-                                message:"Email verified succesfully",
-                                isActiveClass: styles.loaded,
-                                timeout: setTimeout(() => {
-                                    props.nextStep();
-                                }, 1500),
-                            });
-                        })                        
+                        updateState({
+                            message:"Email verified succesfully",
+                            isActiveClass: styles.loaded,
+                            timeout: setTimeout(() => {
+                                props.nextStep();
+                            }, 1500),
+                        });                      
                     }else{
-                        console.log(res.data.message)
                         update(res.data.message)
                         // props.update(stepone.error, res.message);
                         updateState({
@@ -371,8 +351,6 @@ const Progress2 = (props) => {
                             }, 500),
                         });
                     }
-                    console.log(res);
-                    console.log(res.data);
                 })
             }
         } else if (!props.isActive && timeout) {
@@ -394,64 +372,218 @@ const Progress2 = (props) => {
         </div>
     );
 };
+
 const Third = (props) => {
-    const submit = () => {
+
+    const update = (e) => {
+        props.update(e.target.name, e.target.value);
         
     };
-    const [listProducts, updateProducts] = useState()
-    useEffect(()=>{
-        if(!props.products['products']){
-            props.goToStep("progress2")
-            return
-        }else{
-            let new_list = props.products.products.map((product)=>{
-                console.log(product)
-                return (<div>
-                        <Card maxW='sm'>
-                            <CardBody>
-                                <Image
-                                objectFit='cover'
-                                boxSize='200px'
-                                src={product.photo}
-                                alt='Green double couch with wooden legs'
-                                borderRadius='md'
-                                />
-                                <Stack mt='6' spacing='3'>
-                                <Heading  size='md'>{product.title}</Heading>
-                                <Text >
-                                    sexy sax man
-                                    {product.inventory} available
-                                </Text>
-                                </Stack>
-                            </CardBody>
-                            <Divider />
-                            <CardFooter>
-                                {/* <ButtonGroup spacing='2'>
-                                <Button variant='solid' colorScheme='blue'>
-                                    Buy now
-                                </Button>
-                                <Button variant='ghost' colorScheme='blue'>
-                                    Add to cart
-                                </Button>
-                                </ButtonGroup> */}
-                            </CardFooter>
-                        </Card></div>)
-                    })
-                    
-            updateProducts(new_list)
-        }
-    },[props.products['products']])
+    const updateDate = (date)=>{
+        props.update('date', date);
+    }
+
+
     return (
         <div>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-3 col-form-label">Select your pick up date:</label>
+                <div class="col-sm-8">
+                <Form.Control name='date' onChange={update} type="date" />                
+                </div>
+            </div>
+            <br/>
+            <div class="form-group row">
+                <label for="inputPassword3" class="col-sm-3 col-form-label">How full your bucket is:</label>
+                <div class="col-sm-8">
+                <Form.Select name='bucket' onChange={update} aria-label="Default select example">
+                    <option>Open this select menu</option>
+                    <option value="1">Less than half</option>
+                    <option value="2">Around half</option>
+                    <option value="3">Almost full</option>
+                    <option value="4">Full</option>
+                </Form.Select>
+                </div>
+            </div>
+            
+
+            <div id="validationServerFeedback" className="invalid-feedback">
+                {props.error.error}
+            </div>  
+            <Stats step={1} {...props} />
+        </div>
+    );
+};
+
+
+const Fourth = (props) => {
+    const [cart, updateCart] = useState({})
+    const update = (e) => {
+        cart[e.target.name]=e.target.value
+        props.update("cart", cart);
+    };
+
+    const startPosition = useRef(0);
+
+    const submit = () => {
+        alert('You did it! Yay!') // eslint-disable-line
+    };
+
+    
+
+    const [listProducts, updateProducts] = useState([])
+
+    useEffect(()=>{
+        console.log(props.form)
+        if(listProducts.length == 0){
+            axios.get(`http://10.100.18.13:1020/api/Product/GetAllProducts`, {headers:{
+                "Authorization": Cookies.get("Authorization")
+            }})
+            .then(res => {
+                updateProducts(res.data.data.res)
+            })
+        }
+    })
+    return (
+        <div>
+            <label for="inputPassword3" className="col-lg-4 col-form-label mb-5 fs-5">Select your desired items</label>
+
             <Container>
                 <Row className='px-5'>
-                    <OwlCarousel  loop dots={false} center={true} items={3} >
-                            {listProducts}
+                    <OwlCarousel 
+                    startPosition={startPosition.current}
+                    onDragged={({ item, page }) => {
+                        startPosition.current = item.index;
+                    }}
+
+                    dots={false} items={3} >
+
+                        {listProducts.map((product)=>
+                            <div key={product.id}>
+                                <Card maxW='sm'>
+                                    <CardBody>
+                                        <Image
+                                        objectFit='cover'
+                                        boxSize='200px'
+                                        src={product.photo}
+                                        alt='Green double couch with wooden legs'
+                                        borderRadius='md'
+                                        />
+                                        <Stack mt='6' spacing='3'>
+                                        <Heading  size='md'>{product.title}</Heading>
+                                            <Text >
+                                                {product.description}
+                                            </Text>
+                                            <div>
+                                                {product.inventory} available
+                                                <Form.Control style={{width:"40%"}} name={product.id} onChange={update} type="number" />       
+                                            </div>
+                                        </Stack>
+                                    </CardBody>
+                                    <Divider />
+                                    <CardFooter>
+                                        {/* <ButtonGroup spacing='2'>
+                                        <Button variant='solid' colorScheme='blue'>
+                                            Buy now
+                                        </Button>
+                                        <Button variant='ghost' colorScheme='blue'>
+                                            Add to cart
+                                        </Button>
+                                        </ButtonGroup> */}
+                                    </CardFooter>
+                                </Card>
+                            </div>
+                        )}
                     </OwlCarousel>
                 </Row>
             </Container>
 
-            <Stats step={3} {...props} nextStep={submit} />
+            <Stats step={3} {...props} />
+        </div>
+    );
+};
+
+const ProgressFinal = (props) => {
+
+    const [state, updateState] = useState({
+        isActiveClass: '',
+        timeout: null,
+        message:"Submitting Order"
+    });
+
+    useEffect(() => {
+        const { timeout } = state;
+        
+        if (props.isActive && !timeout) {if(props.form.cart){
+            let products = []
+            
+            for (const [key, value] of Object.entries(props.form.cart)) {
+                    products.push({id:key,quantity:value})
+                }
+                axios.post(`http://10.100.18.13:1020/api/Order/AddOrder`,{bucketAmont: props.form.bucket, products: products, pickupDate:props.form.date},{
+                    headers: {
+                    "Authorization": Cookies.get("Authorization")
+                    }
+                })
+                .then(res => {
+                    if(res.data.responseCode == 200){
+                        updateState({
+                            message:"Order submitted succesfully",
+                            isActiveClass: styles.loaded,
+                            timeout: setTimeout(() => {
+                                props.nextStep();
+                            }, 1500),
+                        });
+                    }else{
+                        // props.update(stepone.error, res.message);
+                        updateState({
+                            message:"Email validation in progress",
+                            isActiveClass: styles.loaded,
+                            timeout: setTimeout(() => {
+                                props.previousStep();
+                            }, 500),
+                        });
+                    }
+                })
+            
+        }
+
+            
+        } else if (!props.isActive && timeout) {
+            clearTimeout(timeout);
+            updateState({
+                message:"Email verification in progress",
+                isActiveClass: '',
+                timeout: null,
+            });
+        }
+    });
+
+    return (
+        <div className={styles['progress-wrapper']}>
+            <p className='text-center'>{state.message}</p>
+            <div className={`${styles.progress} ${state.isActiveClass}`}>
+                <div className={`${styles['progress-bar']} progress-bar-striped`} />
+            </div>
+        </div>
+    );
+};
+
+const Final = (props) => {
+
+    const update = (e) => {
+        props.update(e.target.name, e.target.value);
+        
+    };
+    const updateDate = (date)=>{
+        props.update('date', date);
+    }
+
+
+    return (
+        <div>
+            ALL DONE NIGGA
+            {/* <Stats step={1} {...props} /> */}
         </div>
     );
 };
