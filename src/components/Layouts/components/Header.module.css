@@ -52,7 +52,10 @@
 
 
 .navOffers{
-    border: 1px solid silver;
+    color: yellowgreen;
+    background-color: yellowgreen;
+    border: 3px solid yellowgreen;
+    border-radius:  20px 0px 20px 20px;
 }
 
 .active{

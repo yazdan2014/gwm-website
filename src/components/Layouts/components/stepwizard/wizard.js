@@ -22,6 +22,9 @@ import { useReducer } from 'react';
 
 import Form from 'react-bootstrap/Form';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLocationDot , faPhone , faCheckCircle, faHeart, faEnvelope } from '@fortawesome/free-solid-svg-icons'
+
 
 /**
  * A basic demonstration of how to use the step wizard
@@ -328,9 +331,9 @@ const Progress2 = (props) => {
                 axios.post(`http://10.100.18.13:1020/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
                 .then(res => {
                     if(res.data.responseCode == 200){
-                        Cookies.set('Authorization', "Bearer " + res.data.value.response.token, { expires: 100 });
-                        Cookies.set('refreshToken', res.data.value.response.refreshToken, { expires: 100 });
-                        Cookies.set('displayName', res.data.value.response.displayName, { expires: 100 });
+                        Cookies.set('Authorization', "Bearer " + res.data.value.response.token, { expires: 0.069 });
+                        Cookies.set('refreshToken', res.data.value.response.refreshToken, { expires: 0.069 });
+                        Cookies.set('displayName', res.data.value.response.displayName, { expires: 0.069 });
 
                         
                         updateState({
@@ -383,9 +386,25 @@ const Third = (props) => {
         props.update('date', date);
     }
 
+    const [bucketAmounts, updateBucketAmounts] = useState([])
+
+    useEffect(()=>{
+        if(bucketAmounts.length == 0){
+            axios.get(`http://10.100.18.13:1020/api/Order/BucketAmounts`, {headers:{
+                "Authorization": Cookies.get("Authorization")
+            }})
+            .then(res => {
+                updateBucketAmounts(res.data.data.res)
+                console.log(res.data.data.res)
+            })
+        }
+    })
 
     return (
         <div>
+            <p className='fs-4 mb-0'>Good to see you   </p>
+            <p className='fs-4 mb-5'>{Cookies.get("displayName")} <FontAwesomeIcon className='text-center' style={{color: "#63E6BE"}} icon={faHeart}/></p>
+
             <div class="form-group row">
                 <label for="inputPassword3" class="col-sm-3 col-form-label">Select your pick up date:</label>
                 <div class="col-sm-8">
@@ -398,10 +417,10 @@ const Third = (props) => {
                 <div class="col-sm-8">
                 <Form.Select name='bucket' onChange={update} aria-label="Default select example">
                     <option>Open this select menu</option>
-                    <option value="1">Less than half</option>
-                    <option value="2">Around half</option>
-                    <option value="3">Almost full</option>
-                    <option value="4">Full</option>
+                    {bucketAmounts.map((bucket)=>
+                        <option key={bucket.id} value={bucket.id}>{bucket.title}</option>
+
+                    )}
                 </Form.Select>
                 </div>
             </div>
@@ -434,7 +453,6 @@ const Fourth = (props) => {
     const [listProducts, updateProducts] = useState([])
 
     useEffect(()=>{
-        console.log(props.form)
         if(listProducts.length == 0){
             axios.get(`http://10.100.18.13:1020/api/Product/GetAllProducts`, {headers:{
                 "Authorization": Cookies.get("Authorization")
@@ -581,9 +599,10 @@ const Final = (props) => {
 
 
     return (
-        <div>
-            ALL DONE NIGGA
-            {/* <Stats step={1} {...props} /> */}
+        <div className='text-center'>
+            <FontAwesomeIcon className='text-center mb-5' style={{color: "#63E6BE",width:"150px",height:"auto"}} icon={faCheckCircle}/>
+            <p className='h4'>Your request has been submitted succesfully!</p>
+            <p className='fs-5'>We will contact you asap...</p>
         </div>
     );
 };

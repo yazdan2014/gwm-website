@@ -46,7 +46,6 @@ function Header({header_image}) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     
-    console.log(window.location.pathname )
     useEffect(() => {
         if (typeof window !== "undefined") {
             window.addEventListener("scroll", () =>{
@@ -59,7 +58,6 @@ function Header({header_image}) {
                     setLinkColor("white")
                 }
                 // setSmall(window.pageYOffset > 200)
-                console.log(window.scrollY)
             });
 
             window.addEventListener('resize', function(event){
@@ -123,7 +121,7 @@ function Header({header_image}) {
                                 <Nav.Link style={{ color : link_color }} className={styles.navItem2 + " px-0 mx-3"} href="#">SHOP</Nav.Link>
                                 <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/recyclesolution' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="#">RECYCLE SOLUTION</Nav.Link>
                                 <Nav.Link style={{ color : link_color , ...(window.location.pathname === '/contact-us' ? mstyle.active_link:{}) }} className={styles.navItem2 + " px-0 mx-3"} href="/contact-us">CONTACT US</Nav.Link>
-                                <Nav.Link style={{ color : link_color  }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} onClick={handleShow} href="#">ONE CLICK PICKUP</Nav.Link>
+                                <Nav.Link style={{ color : "white"  }} className={styles.navItem2 + "  mx-3 " + styles.navOffers} onClick={handleShow} href="#">ONE CLICK PICKUP</Nav.Link>
                             </Nav>
                         </span>
                     </Navbar.Collapse>
