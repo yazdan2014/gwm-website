@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Widget } from 'react-chat-widget';
+import 'react-chat-widget/lib/styles.css';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -50,6 +52,7 @@ export default function App() {
             <Route path='/blog' element={<ContactUs />} />
           </Route>
         </Routes>
+        <Widget />
       </BrowserRouter>
   );
 }
