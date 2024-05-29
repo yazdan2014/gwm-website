@@ -3,6 +3,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import kiwi from '../../assets/logosite.png'
 
+import Chat from './components/Chat'
+
 import React, { Component }  from 'react';
 
 const Layout = () => {
@@ -20,6 +22,7 @@ const Layout = () => {
       </header>
 
       <Outlet />
+      <Chat />
 
       <Footer />
     </>

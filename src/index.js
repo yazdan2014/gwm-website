@@ -52,7 +52,7 @@ export default function App() {
             <Route path='/blog' element={<ContactUs />} />
           </Route>
         </Routes>
-        <Widget />
+        {/* <Widget /> */}
       </BrowserRouter>
   );
 }
