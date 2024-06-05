@@ -10,9 +10,11 @@ import Button from 'react-bootstrap/Button';
 import styles from './Chat.module.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMessage, faX  } from '@fortawesome/free-solid-svg-icons'
+import { faMessage, faX, faPaperPlane  } from '@fortawesome/free-solid-svg-icons'
 import { Container, Row, Col, Image } from 'react-bootstrap';
 import logo from '../../../assets/logobw.png';
+
+import Form from 'react-bootstrap/Form';
 
 import { motion , AnimatePresence ,} from "framer-motion"
 
@@ -45,8 +47,19 @@ function Chat() {
                                 <Button onClick={handleOpen} className=''><FontAwesomeIcon size={'sm'} fontWeight={"100"} color='white' icon={faX}/></Button>
                             </Col>    
                         </Row> 
-                        <Row className={styles.chat + ' items-center m-auto fs-5 w-100 '}>
-                            
+                        <Row className={styles.chat + ' items-center m-auto fs-5 w-100 align-items-end'}>
+                            <Row className={styles.footer + ' mx-0'}>
+                                <Col className='d-flex justify-content-center my-auto' sm={10} >
+                                <Form.Control
+                                    className='my-auto w-100 border-0'
+                                    placeholder='Type a message...'
+                                    type="text"
+                                />
+                                </Col>
+                                <Col className='d-flex justify-content-center my-auto' sm={2} >
+                                    <button className='my-auto w-100 ' type='text' ><FontAwesomeIcon size={'lg'} fontWeight={"100"} color='#72B62B' icon={faPaperPlane}/></button>
+                                </Col>
+                            </Row>
                         </Row>
                     </Container>
                 </motion.div>
@@ -62,7 +75,7 @@ function Chat() {
                     animate={{ y:0 , opacity: 1   }}
                     exit={{  opacity: 0 }}
                     className={styles.floatingBtn + ' float-end'} onClick={handleOpen}>                    
-                    <FontAwesomeIcon size={'lg'} style={{width:"28px",height:"auto"}} icon={faMessage}/>
+                    <FontAwesomeIcon  size={'lg'} style={{width:"28px",height:"auto"}} icon={faMessage}/>
                 </motion.button>
                 }
             </AnimatePresence>
