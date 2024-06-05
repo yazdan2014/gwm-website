@@ -11,19 +11,66 @@ import styles from './Chat.module.css'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMessage, faX, faPaperPlane  } from '@fortawesome/free-solid-svg-icons'
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col, Image , Form } from 'react-bootstrap';
 import logo from '../../../assets/logobw.png';
 
-import Form from 'react-bootstrap/Form';
 
+
+import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { motion , AnimatePresence ,} from "framer-motion"
 
 
 function Chat() {
     const [open, setOpen] = useState(false);
+
+    const [conn, setConnection] = useState(null);
+    const [_messages, setMessages] = useState([{ user: "", msg: "" }]);
+
+    const [message, setMessage] = useState("");
+
+    const username = "yaz" 
+    const chatroom = "yaz-chatroom" 
+
     const handleOpen = () => {
+        if(!conn) joinChatRoom()
         setOpen(!open);
     };
+
+    const joinChatRoom = async () => {
+        try {
+        const conn = new HubConnectionBuilder()
+            .withUrl("http://10.100.18.21:1020/Chat")
+            .configureLogging(LogLevel.Information)
+            .build();
+        //debugger;
+        conn.on("JoinToChatRoom", (user, msg) => {
+            setMessages((_messages) => [..._messages, { user, msg }]);
+        });
+
+        await conn.start();
+        await conn.invoke("JoinToChatRoom", { username, chatroom });
+
+        conn.on("SendMessage", (user, msg) => {
+            setMessages((_messages) => [..._messages, { user, msg }]);
+        });
+        // await conn.invoke("SendMessage", "salam");
+
+        setConnection(conn);
+        } catch (e) {
+        console.log(e);
+        }
+    };
+
+    const sendMessageToGroup = async () => {
+        try {
+          await conn.invoke("SendMessage", message);
+          setMessages((_messages) => [..._messages, { username, message }]);
+          setMessage("")
+        } catch (e) {
+          console.log(e);
+        }
+      };
+
     return (
         <>
             <div className={styles.float}>
@@ -47,19 +94,58 @@ function Chat() {
                                 <Button onClick={handleOpen} className=''><FontAwesomeIcon size={'sm'} fontWeight={"100"} color='white' icon={faX}/></Button>
                             </Col>    
                         </Row> 
-                        <Row className={styles.chat + ' items-center m-auto fs-5 w-100 align-items-end'}>
-                            <Row className={styles.footer + ' mx-0'}>
-                                <Col className='d-flex justify-content-center my-auto' sm={10} >
-                                <Form.Control
-                                    className='my-auto w-100 border-0'
-                                    placeholder='Type a message...'
-                                    type="text"
-                                />
-                                </Col>
-                                <Col className='d-flex justify-content-center my-auto' sm={2} >
-                                    <button className='my-auto w-100 ' type='text' ><FontAwesomeIcon size={'lg'} fontWeight={"100"} color='#72B62B' icon={faPaperPlane}/></button>
-                                </Col>
-                            </Row>
+                        <Row className={styles.chat + ' m-0 w-100 '}>
+                            <div className={'overflow-auto ' + styles.messages }>
+                                {
+                                    _messages.map((message)=>{
+                                        if(message.user !== username){
+                                            return(
+                                                <Row className={ styles.messageWrapper +' align-items-right'}>
+                                                    <div className={styles.messageAdmin + ' w-auto h-auto text-justify ms-auto'}>
+                                                        <p>{message.msg}</p>
+                                                        <div className={styles.chatTime + " "}>12:48 AM</div>
+                                                    </div>
+                                                </Row>
+                                            )
+                                        }else{
+                                            return(
+                                                <Row className={ styles.messageWrapper }>
+                                                    <div className={styles.messageUser + ' w-auto h-auto text-justify'}>
+                                                        <p>{message.msg}</p>
+                                                        <div className={styles.chatTime + " "}>12:48 AM</div>
+                                                    </div>
+                                                </Row>
+                                            )
+                                        }
+                                    })
+                                }
+                                
+
+
+                            </div>
+                                <Form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        sendMessageToGroup(message);
+                                        setMessage("");
+                                    }}
+                                   className={styles.footer + ' mx-0'}>
+                                    <Row className={styles.footer + ' mx-0 mt-2'}>
+                                            <Col className='d-flex justify-content-center my-auto' sm={10} >
+                                            <Form.Control
+                                                className='my-auto w-100 border-0'
+                                                placeholder='Type a message...'
+                                                type="text"
+                                                onChange={(e) => setMessage(e.target.value)}
+                                                value={message}
+                                            />
+                                            </Col>
+                                            <Col className='d-flex justify-content-center my-auto' sm={2} >
+                                                <button className='my-auto w-100 ' type='text' ><FontAwesomeIcon size={'lg'} fontWeight={"100"} color='#72B62B' icon={faPaperPlane}/></button>
+                                            </Col>
+                                    </Row>
+                                </Form>
+                            
                         </Row>
                     </Container>
                 </motion.div>
