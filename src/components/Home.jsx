@@ -42,8 +42,7 @@ import Jumbo from './Layouts/components/Jumbo'
 function Home() {
     return (  
       <>
-
-        <OwlCarousel className={styles.carousel} dots={false} loop autoplay center={true} items={1} >
+          <OwlCarousel className={styles.carousel} dots={false} loop autoplay center={true} items={1} >
             <div className={'item '+ styles.carouselItem}>
               <Image className={styles.carouselImages} src={web3} fluid/>
             </div>
@@ -53,10 +52,54 @@ function Home() {
             <div className={'item '+ styles.carouselItem}>
                 <Image className={styles.carouselImages} src={web1} fluid/>
             </div>
-        </OwlCarousel>
-      
+          </OwlCarousel>
+        
+        <section className={styles.section1}>
+          <Container className='py-5 w-50 text-center fs-5 w-100  text-muted'>
+            <Row>
+              <Col sm={4} className={'text-start ' } ><h1 className={styles.sec1topic + ' w-50 mx-auto'}>Our<br/>Services</h1></Col>
+              <Col md={8}>
+                <div className={styles.sec1layers}>
+                  <Row>
+                    <Col className={styles.sec1wm} md={11}><div className={'text-start'}><h3 style={{color:"#FFB800",fontSize:"32px"}}>Waste Management</h3></div></Col>
+                    <Col style={{borderBottom:"solid 3px #FFB800"}} md={1}><div className={'text-center'}><h3 style={{color:"#FFB800",fontSize:"32px" }}>&gt;</h3></div></Col>
+                  </Row>
+                  <Row className={'text-start pt-3 text-muted'}>
+                    <Col md={6}><p style={{fontWeight:'400'}}>&gt; UCO Collecting</p></Col>
+                    <Col md={6}><p>&gt; Collect Request</p></Col>
+                    <Col md={6}><p>&gt; Fresh Pickups</p></Col>
+                  </Row>
+                </div>
+                <div className={styles.sec1layers}>
+                  <Row>
+                    <Col className={styles.sec1wm} md={11}><div className={'text-start'}><h3 style={{color:"#68BC41",fontSize:"32px"}}>International Waste Trade</h3></div></Col>
+                    <Col style={{borderBottom:"solid 3px #68BC41"}} md={1}><div className={'text-center'}><h3 style={{color:"#68BC41",fontSize:"32px" }}>&gt;</h3></div></Col>
+                  </Row>
+                  <Row className={'text-start pt-3 '}>
+                    <Col md={6}><p>&gt; UCO Collecting</p></Col>
+                    <Col md={6}><p>&gt; Collect Request</p></Col>
+                    <Col md={6}><p>&gt; Fresh Pickups</p></Col>
+                  </Row>
+                </div>
+                <div className={styles.sec1layers}>
+                  <Row>
+                    <Col className={styles.sec1wm} md={11}><div className={'text-start'}><h3 style={{color:"#373F51",fontSize:"32px"}}>Oit & Fat Processing</h3></div></Col>
+                    <Col style={{borderBottom:"solid 3px #373F51"}} md={1}><div className={'text-center'}><h3 style={{color:"#373F51",fontSize:"32px" }}>&gt;</h3></div></Col>
+                  </Row>
 
-        <section className={styles.section1 + " fs-5  text-muted"}>
+                </div>
+              </Col>
+            </Row>
+
+            
+          </Container>
+        </section>
+
+        <section className={styles.section2 + " fs-5  text-muted"}>
+          {/* <br/>
+          <br/>
+          <br/>
+          <br/> */}
           <Container >
               <Row>
                 <h1 className='text-center'>Welcome to GWM</h1>

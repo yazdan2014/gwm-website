@@ -24,19 +24,60 @@
 }
 
 
-.carousel::before{
-    background: url('../assets/home/left-pattern_800.png')!important;
-    position: absolute;
-    z-index: 1
+.jumboDivOverlay{
+    width: 50vw;
+    height: 450px;
+    background-color: white;
+    z-index: 10;
+    top: calc(100% - 350px);
+    left: 35vw;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
+.section1 h1{
+    color: #505767;
+}
 .section1{
+
+}
+.sec1topic{
+    position: relative;
+}
+.sec1topic:before{
+    /* margin: ; */
+    content: "";
+    width:30px;
+    height:30px;/* slight higher to work around rounding errors(?) on some zoom levels in some browsers. */
+    /* background-color:#F3F4F6; */
+    border-top: solid 8px #F3F4F6 ;
+    border-left: solid 8px #F3F4F6 ;
+    position: absolute;
+    /* right:0; */
+    top:-15px;
+    left:-15px;
+}
+
+.sec1wm{
+    border-bottom: solid 3px #F3F4F6;
+    position: relative;
+}
+
+.sec1layers{
+    margin-bottom: 40px;
+}
+h5{
+    color: #959EB0;
+    font-size: 23px;
+}
+
+.section2{
     padding-top: 50px;
     background: url('../assets/home/tpattern-bg.jpg') center center repeat;
     font-family: Rubik;
     width: 100%;
 }
- p{
+
+p{
     color: gray;
 }
 

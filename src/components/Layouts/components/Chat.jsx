@@ -14,6 +14,8 @@ import { faMessage, faX, faPaperPlane  } from '@fortawesome/free-solid-svg-icons
 import { Container, Row, Col, Image , Form } from 'react-bootstrap';
 import logo from '../../../assets/logobw.png';
 
+import Lottie from 'react-lottie';
+import loading_animation from './../../../assets/chat/loading.json'
 
 
 import { HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
@@ -21,10 +23,19 @@ import { motion , AnimatePresence ,} from "framer-motion"
 
 
 function Chat() {
+    const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: loading_animation,
+        rendererSettings: {
+          preserveAspectRatio: "xMidYMid slice"
+        }
+      };
+      
     const [open, setOpen] = useState(false);
 
     const [conn, setConnection] = useState(null);
-    const [_messages, setMessages] = useState([{ user: "", msg: "" }]);
+    const [_messages, setMessages] = useState([]);
 
     const [message, setMessage] = useState("");
 
@@ -34,24 +45,35 @@ function Chat() {
     const handleOpen = () => {
         if(!conn) joinChatRoom()
         setOpen(!open);
+        console.log(_messages)
     };
 
     const joinChatRoom = async () => {
         try {
         const conn = new HubConnectionBuilder()
-            .withUrl("http://10.100.18.21:1020/Chat")
+            .withUrl("https://api.germanwm.de/Chat")
             .configureLogging(LogLevel.Information)
             .build();
         //debugger;
-        conn.on("JoinToChatRoom", (user, msg) => {
-            setMessages((_messages) => [..._messages, { user, msg }]);
-        });
+        // conn.on("JoinToChatRoom", (user, msg) => {
+        //     setMessages((_messages) => [..._messages, { user, msg }]);
+        // });
 
-        await conn.start();
+        try{
+            await conn.start();
+        }catch{
+            console.log("Connection timed out, reconnecting...")
+            
+            return setTimeout(joinChatRoom,3000)
+        }
         await conn.invoke("JoinToChatRoom", { username, chatroom });
 
-        conn.on("SendMessage", (user, msg) => {
-            setMessages((_messages) => [..._messages, { user, msg }]);
+        conn.on("SendMessage", (user, content, time) => {
+            setMessages((_messages) => [..._messages, { user, content, time}]);
+        });
+
+        conn.on("JoinToChatRoom", (user, msg,time) => {
+            setMessages((_messages) => [..._messages, { user, msg ,time}]);
         });
         // await conn.invoke("SendMessage", "salam");
 
@@ -64,7 +86,7 @@ function Chat() {
     const sendMessageToGroup = async () => {
         try {
           await conn.invoke("SendMessage", message);
-          setMessages((_messages) => [..._messages, { username, message }]);
+        //   setMessages((_messages) => [..._messages, { username, message }]);
           setMessage("")
         } catch (e) {
           console.log(e);
@@ -75,7 +97,9 @@ function Chat() {
         <>
             <div className={styles.float}>
             <AnimatePresence  >
-                {open && <motion.div
+                {open && 
+                
+                <motion.div
                     initial={{ y:100, opacity: 0 }}
                     animate={{ y:0 , opacity: 1   }}
                     exit={{ y:100, opacity: 0 }}
@@ -94,42 +118,44 @@ function Chat() {
                                 <Button onClick={handleOpen} className=''><FontAwesomeIcon size={'sm'} fontWeight={"100"} color='white' icon={faX}/></Button>
                             </Col>    
                         </Row> 
-                        <Row className={styles.chat + ' m-0 w-100 '}>
-                            <div className={'overflow-auto ' + styles.messages }>
-                                {
-                                    _messages.map((message)=>{
-                                        if(message.user !== username){
-                                            return(
-                                                <Row className={ styles.messageWrapper +' align-items-right'}>
-                                                    <div className={styles.messageAdmin + ' w-auto h-auto text-justify ms-auto'}>
-                                                        <p>{message.msg}</p>
-                                                        <div className={styles.chatTime + " "}>12:48 AM</div>
-                                                    </div>
-                                                </Row>
-                                            )
-                                        }else{
-                                            return(
-                                                <Row className={ styles.messageWrapper }>
-                                                    <div className={styles.messageUser + ' w-auto h-auto text-justify'}>
-                                                        <p>{message.msg}</p>
-                                                        <div className={styles.chatTime + " "}>12:48 AM</div>
-                                                    </div>
-                                                </Row>
-                                            )
-                                        }
-                                    })
-                                }
-                                
+                            {conn &&
+                            
+                            <Row className={styles.chat + ' m-0 w-100 '}>
+                                <div className={'overflow-auto ' + styles.messages }>
+                                    {
+                                        _messages.map((message)=>{
+                                            if(message.user !== username){
+                                                return(
+                                                    <Row className={ styles.messageWrapper +' align-items-right'}>
+                                                        <div className={styles.messageAdmin + ' w-auto h-auto text-justify ms-auto'}>
+                                                            <p>{message.content}</p>
+                                                            <div className={styles.chatTime + " "}>{message.time}</div>
+                                                        </div>
+                                                    </Row>
+                                                )
+                                            }else{
+                                                return(
+                                                    <Row className={ styles.messageWrapper }>
+                                                        <div className={styles.messageUser + ' w-auto h-auto text-justify'}>
+                                                            <p>{message.content}</p>
+                                                            <div className={styles.chatTime + " "}>{message.time}</div>
+                                                        </div>
+                                                    </Row>
+                                                )
+                                            }
+                                        })
+                                    }
+                                    
 
 
-                            </div>
+                                </div>
                                 <Form
                                     onSubmit={(e) => {
                                         e.preventDefault();
                                         sendMessageToGroup(message);
                                         setMessage("");
                                     }}
-                                   className={styles.footer + ' mx-0'}>
+                                    className={styles.footer + ' mx-0'}>
                                     <Row className={styles.footer + ' mx-0 mt-2'}>
                                             <Col className='d-flex justify-content-center my-auto' sm={10} >
                                             <Form.Control
@@ -145,8 +171,17 @@ function Chat() {
                                             </Col>
                                     </Row>
                                 </Form>
-                            
-                        </Row>
+                            </Row>
+                            }{
+                                !conn &&
+                                <Row className={styles.chatLoading + ' m-0 w-100 '}>
+                                    <Lottie 
+                                        options={defaultOptions}
+                                        height={400}
+                                        width={400}
+                                    />
+                                </Row>
+                            }
                     </Container>
                 </motion.div>
                 }
