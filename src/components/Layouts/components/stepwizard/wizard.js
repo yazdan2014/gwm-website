@@ -258,7 +258,7 @@ const Progress = (props) => {
         const { timeout } = state;
 
         if (props.isActive && !timeout) {
-            axios.get(`http://${process.env.APP_DOMAIN}/api/Email/VerifyEmail`,{headers:{'verifyEmail':props.form.email}})
+            axios.get(`https://api.germanwm.de/api/Email/VerifyEmail`,{headers:{'verifyEmail':props.form.email}})
             .then(res => {
                 if(res.data.responseCode == 200){
                     props.updateForm("id",res.data.data.id)
@@ -328,7 +328,7 @@ const Progress2 = (props) => {
                     }, 1500),
                 });   
             }else{
-                axios.post(`http://${process.env.APP_DOMAIN}/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
+                axios.post(`https://api.germanwm.de/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
                 .then(res => {
                     if(res.data.responseCode == 200){
                         Cookies.set('Authorization', "Bearer " + res.data.value.response.token, { expires: 0.069 });
@@ -390,7 +390,7 @@ const Third = (props) => {
 
     useEffect(()=>{
         if(bucketAmounts.length == 0){
-            axios.get(`http://${process.env.APP_DOMAIN}/api/Order/BucketAmounts`, {headers:{
+            axios.get(`https://api.germanwm.de/api/Order/BucketAmounts`, {headers:{
                 "Authorization": Cookies.get("Authorization")
             }})
             .then(res => {
@@ -454,7 +454,7 @@ const Fourth = (props) => {
 
     useEffect(()=>{
         if(listProducts.length == 0){
-            axios.get(`http://${process.env.APP_DOMAIN}/api/Product/GetAllProducts`, {headers:{
+            axios.get(`https://api.germanwm.de/api/Product/GetAllProducts`, {headers:{
                 "Authorization": Cookies.get("Authorization")
             }})
             .then(res => {
@@ -538,7 +538,7 @@ const ProgressFinal = (props) => {
             for (const [key, value] of Object.entries(props.form.cart)) {
                     products.push({id:key,quantity:value})
                 }
-                axios.post(`http://${process.env.APP_DOMAIN}/api/Order/AddOrder`,{bucketAmont: props.form.bucket, products: products, pickupDate:props.form.date},{
+                axios.post(`https://api.germanwm.de/api/Order/AddOrder`,{bucketAmont: props.form.bucket, products: products, pickupDate:props.form.date},{
                     headers: {
                     "Authorization": Cookies.get("Authorization")
                     }

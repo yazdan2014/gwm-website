@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleQuestion, faPhoneVolume } from '@fortawesome/free-solid-svg-icons'
 
 import logo from '../../../assets/logosite.png';
+import logowhite from '../../../assets/logositewhite.png'
 
 import styles from './Header.module.css';
 
@@ -34,6 +35,7 @@ import { NavLink } from 'react-router-dom';
 function Header({header_image}) {
     let [header_class, setHeaderClass] = useState(["" , true, '300px'])
     let [link_color, setLinkColor] = useState('white')
+    let [is_top, setIsTop] = useState(true)
     
     const mstyle = {
         active_link:{
@@ -45,6 +47,8 @@ function Header({header_image}) {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
     
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -53,9 +57,12 @@ function Header({header_image}) {
 
                     setHeaderClass([styles.stickyHeader, false , '250px'])
                     setLinkColor("#00913E")
+                    setIsTop(false)
                 }else if ( window.innerWidth > 1199){
                     setHeaderClass(['', true, "300px"])
                     setLinkColor("white")
+                    setIsTop(true)
+
                 }
                 // setSmall(window.pageYOffset > 200)
             });
@@ -79,7 +86,7 @@ function Header({header_image}) {
             <Navbar expand="xl" className={ " " + header_class[0]}>
                 <Container>
                     
-                    <Navbar.Brand  href="#home"><img className={styles.navBrand} width={header_class[2]} src={logo}></img></Navbar.Brand>
+                    <Navbar.Brand className='py-4'  href="#home"><img className={styles.navBrand} width={header_class[2]} src={(is_top?logowhite:logo)}></img></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
             
                     <Navbar.Collapse className='justify-content-end'>
@@ -87,11 +94,11 @@ function Header({header_image}) {
                         <span className='mr-auto'>
                             { header_class[1] &&
                             <Nav className={styles.nav1 + " justify-content-end"} >
-                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#home"><FontAwesomeIcon icon={faPhoneVolume} /> +49 (0) 5363 - 810 3 750</Nav.Link>
+                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} ><FontAwesomeIcon icon={faPhoneVolume} /> +49 (0) 5363 - 810 3 750</Nav.Link>
                                 <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="/contact-us"><FontAwesomeIcon icon={faCircleQuestion} /> FAQ</Nav.Link>
-                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#link">PORTAL 360</Nav.Link>
-                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#">REGULATIONS</Nav.Link>
-                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="#">CAREERS</Nav.Link>
+                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="/contact-us">PORTAL 360</Nav.Link>
+                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="/contact-us">REGULATIONS</Nav.Link>
+                                <Nav.Link className={styles.navItem1 + " py-0 px-3"} href="/contact-us">CAREERS</Nav.Link>
                                 
                                 {/* <NavDropdown className={styles.navItem + " py-0"} title="English" >
                                     <NavDropdown.Item href="#action/3.1">Deutsch</NavDropdown.Item>

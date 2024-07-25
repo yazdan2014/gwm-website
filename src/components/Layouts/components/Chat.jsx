@@ -112,7 +112,7 @@ function Chat() {
                             </Col>    
                             <Col className={'my-auto '} md={8}>
                                 <h4 className='mb-0'>Live Chat Support</h4>
-                                <h5>Working hours: 8am - 21pm (GMT+2)</h5>
+                                <h5 className='text-white'>Working hours: 8am - 21pm (GMT+2)</h5>
                             </Col>   
                             <Col className='align-items-end my-auto' md={2}>
                                 <Button onClick={handleOpen} className=''><FontAwesomeIcon size={'sm'} fontWeight={"100"} color='white' icon={faX}/></Button>

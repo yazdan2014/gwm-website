@@ -39,7 +39,7 @@
     "eject": "react-scripts eject",
     "webpack": "webpack",
     "webpack-dev-server": "webpack-dev-server",
-    "dev": "npm run webpack-dev-server -- --env mode=development",
+    "dev": "react-scripts start",
     "prod": "npm run webpack -- --env mode=production"
   },
   "eslintConfig": {
