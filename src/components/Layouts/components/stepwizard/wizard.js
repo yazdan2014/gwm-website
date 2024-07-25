@@ -180,7 +180,16 @@ const First = props => {
     
     useEffect(()=>{
         if(Cookies.get('Authorization') && props.isActive ){
-            props.goToStep("step3")
+            axios.get(`https://api.germanwm.de/api/Order/HasOrdered`, {headers:{
+                "Authorization": Cookies.get("Authorization")
+            }})
+            .then(res => {
+                if (res.data.responseCode == 400){
+                    props.goToStep("progress2")
+                }else if(res.data.responseCode == 200){
+                    props.goToStep("step3")
+                }
+            })
         }
         
     }, [])
@@ -261,7 +270,7 @@ const Progress = (props) => {
             axios.get(`https://api.germanwm.de/api/Email/VerifyEmail`,{headers:{'verifyEmail':props.form.email}})
             .then(res => {
                 if(res.data.responseCode == 200){
-                    props.updateForm("id",res.data.data.id)
+                    props.updateForm("id",res.data.value.response)
                     updateState({
                         message:"Email validated succesfully",
                         isActiveClass: styles.loaded,
@@ -271,7 +280,7 @@ const Progress = (props) => {
                     });
                 }else{
                     update(res.data.message)
-                    // props.update(stepone.error, res.message);
+                    // props.update(stepone.error, res.data.message);
                     updateState({
                         message:"Email validation in progress",
                         isActiveClass: styles.loaded,
@@ -320,13 +329,30 @@ const Progress2 = (props) => {
 
         if (props.isActive && !timeout) {
             if(Cookies.get("Authorization")){
-                updateState({
-                    message:"Email verified succesfully",
-                    isActiveClass: styles.loaded,
-                    timeout: setTimeout(() => {
-                        props.nextStep();
-                    }, 1500),
-                });   
+                axios.get(`https://api.germanwm.de/api/Order/HasOrdered`, {headers:{
+                    "Authorization": Cookies.get("Authorization")
+                }})
+                .then(res => {
+                    if (res.data.responseCode == 400){
+                        updateState({
+                            message:"An order has already been submitted by this email address!",
+                            isActiveClass: styles.loaded,
+                            // timeout: setTimeout(() => {
+                            //     props.nextStep();
+                            // }, 1500),
+                        });     
+                    }else if(res.data.responseCode ==200){
+                        updateState({
+                        message:"Email verified succesfully",
+                        isActiveClass: styles.loaded,
+                        timeout: setTimeout(() => {
+                            props.nextStep();
+                        }, 1500),
+                        });   
+                    }
+                })
+                
+                
             }else{
                 axios.post(`https://api.germanwm.de/api/Email/VerifyCode`,{id: props.form.id, code: props.form.vfc})
                 .then(res => {
@@ -334,18 +360,31 @@ const Progress2 = (props) => {
                         Cookies.set('Authorization', "Bearer " + res.data.value.response.token, { expires: 0.069 });
                         Cookies.set('refreshToken', res.data.value.response.refreshToken, { expires: 0.069 });
                         Cookies.set('displayName', res.data.value.response.displayName, { expires: 0.069 });
-
-                        
-                        updateState({
-                            message:"Email verified succesfully",
-                            isActiveClass: styles.loaded,
-                            timeout: setTimeout(() => {
-                                props.nextStep();
-                            }, 1500),
-                        });                      
+                        axios.get(`https://api.germanwm.de/api/Order/HasOrdered`, {headers:{
+                            "Authorization": Cookies.get("Authorization")
+                        }})
+                        .then(res => {
+                            if (res.data.responseCode == 400){
+                                updateState({
+                                    message:"An order has already been submitted by this email address!",
+                                    isActiveClass: styles.loaded,
+                                    // timeout: setTimeout(() => {
+                                    //     props.nextStep();
+                                    // }, 1500),
+                                });     
+                            }else if (res.data.responseCode == 200){
+                                updateState({
+                                    message:"Email verified succesfully",
+                                    isActiveClass: styles.loaded,
+                                    timeout: setTimeout(() => {
+                                        props.nextStep();
+                                    }, 1500),
+                                });     
+                            }
+                        })                                         
                     }else{
                         update(res.data.message)
-                        // props.update(stepone.error, res.message);
+                        // props.update(stepone.error, res.data.message);
                         updateState({
                             message:"Email verification in progress",
                             isActiveClass: styles.loaded,
@@ -394,11 +433,12 @@ const Third = (props) => {
                 "Authorization": Cookies.get("Authorization")
             }})
             .then(res => {
-                updateBucketAmounts(res.data.data.res)
-                console.log(res.data.data.res)
+                updateBucketAmounts(res.data.value.response)
+                // console.log(res.data.data.res)
             })
         }
-    })
+    },[])
+
 
     return (
         <div>
@@ -458,10 +498,11 @@ const Fourth = (props) => {
                 "Authorization": Cookies.get("Authorization")
             }})
             .then(res => {
-                updateProducts(res.data.data.res)
+                console.log(res)
+                updateProducts(res.data.value.response)
             })
         }
-    })
+    },[])
     return (
         <div>
             <label for="inputPassword3" className="col-lg-4 col-form-label mb-5 fs-5">Select your desired items</label>
@@ -553,7 +594,7 @@ const ProgressFinal = (props) => {
                             }, 1500),
                         });
                     }else{
-                        // props.update(stepone.error, res.message);
+                        // props.update(stepone.error, res.data.message);
                         updateState({
                             message:"Email validation in progress",
                             isActiveClass: styles.loaded,
